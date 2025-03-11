@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"flag"
 	"log"
 	"net"
 
+	"github.com/WithSoull/AuthService/internal/config"
 	desc "github.com/WithSoull/AuthService/pkg/user/v1"
 	"github.com/brianvoe/gofakeit"
 	"google.golang.org/grpc"
@@ -13,6 +14,13 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+var configPath string
+
+func init() {
+  flag.StringVar(&configPath, "config-path", ".env", "path to config file")
+}
+
 const (
   grpcPort = 50051
 )
@@ -78,7 +86,18 @@ func (s *server) Delete(ctx context.Context, req *desc.DeleteRequest) (*emptypb.
 }
 
 func main() {
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", grpcPort))
+  flag.Parse()
+  
+  if err := config.Load(configPath); err != nil {
+    log.Fatalf("failed load config: %s", err)
+  }
+
+  grpcConfig, err := config.NewGRPCConfig()
+  if err != nil {
+    log.Fatalf("failed load grpc config: %s", err)
+  }
+
+	lis, err := net.Listen("tcp", grpcConfig.Address())
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
