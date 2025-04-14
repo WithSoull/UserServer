@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/WithSoull/AuthService/internal/config"
+	// "github.com/WithSoull/AuthService/internal/config"
 	desc "github.com/WithSoull/AuthService/pkg/user/v1"
 	"github.com/brianvoe/gofakeit"
 	"google.golang.org/grpc"
@@ -87,17 +87,18 @@ func (s *server) Delete(ctx context.Context, req *desc.DeleteRequest) (*emptypb.
 
 func main() {
   flag.Parse()
-  
-  if err := config.Load(configPath); err != nil {
-    log.Fatalf("failed load config: %s", err)
-  }
 
-  grpcConfig, err := config.NewGRPCConfig()
-  if err != nil {
-    log.Fatalf("failed load grpc config: %s", err)
-  }
+  // if err := config.Load(configPath); err != nil {
+  //   log.Fatalf("failed load config: %s", err)
+  // }
 
-	lis, err := net.Listen("tcp", grpcConfig.Address())
+  // grpcConfig, err := config.NewGRPCConfig()
+  // if err != nil {
+  //   log.Fatalf("failed load grpc config: %s", err)
+  // }
+
+	// lis, err := net.Listen("tcp", grpcConfig.Address())
+	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
