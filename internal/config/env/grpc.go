@@ -1,26 +1,27 @@
-package config
+package env
 
 import (
 	"errors"
 	"net"
 	"os"
+
+	"github.com/WithSoull/AuthService/internal/config"
 )
+
+var _ config.GRPCCongif = (*grpcConfig)(nil)
 
 const (
   grpcHostEnvName = "GRPC_HOST"
   grpcPortEnvName = "GRPC_PORT"
 )
 
-type GRPCCongif interface {
-  Address() string
-}
 
 type grpcConfig struct {
   host string
   port string
 }
 
-func NewGRPCConfig() (GRPCCongif, error) {
+func NewGRPCConfig() (*grpcConfig, error) {
   host := os.Getenv(grpcHostEnvName)
   if len(host) == 0 {
     return nil, errors.New("grpc host not found")
@@ -38,5 +39,6 @@ func NewGRPCConfig() (GRPCCongif, error) {
 }
 
 func (cfg *grpcConfig) Address() string {
-  return net.JoinHostPort(cfg.host, cfg.port)
+	address := net.JoinHostPort(cfg.host, cfg.port)
+  return address
 }

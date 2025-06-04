@@ -9,5 +9,6 @@ RUN go build -o ./bin/auth-server cmd/server/main.go
 FROM alpine:3.21
 WORKDIR /root/
 COPY --from=builder /auth-service/bin/auth-server .
+COPY .env .
 
 CMD ["./auth-server"]

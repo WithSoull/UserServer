@@ -8,3 +8,11 @@ func Load(path string) error {
   }
   return nil
 }
+
+type GRPCCongif interface {
+  Address() string
+}
+
+type PGCongif interface {
+  DSN() string
+}

@@ -15,3 +15,17 @@ services:
     volumes:
       - postgres_volume:/var/lib/postgresql/data
        
+  migrator:
+    build:
+      context: .
+      dockerfile: migrator.Dockerfile
+
+    restart: on-failure
+    environment:
+        DB_HOST: pg
+
+  auth-service:
+    build: .
+    ports:
+      - "50051:${GRPC_PORT}"
+    restart: unless-stopped
