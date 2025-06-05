@@ -19,7 +19,7 @@ get-deps:
 	go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 	go get -u github.com/jackc/pgx/v5
 	go get -u google.golang.org/grpc
-	go get -u google.golang.org/go/x/crypto
+	go get -u golang.org/x/crypto
 
 generate-api:
 	mkdir -p pkg/user/v1
