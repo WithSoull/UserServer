@@ -12,7 +12,7 @@ var _ config.PGCongif = (*pgConfig)(nil)
 const (
   dsnEnvName = "PG_DSN"
 	hostEnvName = "PG_HOST"
-	portEnvName = "PG_PORT"
+	portEnvName = "PG_PORT_INNER"
 	dbEnvName = "PG_DATABASE_NAME"
 	userEnvName = "PG_USER"
 	passwordEnvName = "PG_PASSWORD"
@@ -28,6 +28,7 @@ func NewPGConfig() (*pgConfig, error) {
   dsn := os.Getenv(dsnEnvName)
 	if len(dsn) == 0 {
 			host := os.Getenv(hostEnvName)
+			fmt.Printf("host = %s", host)
 			port := os.Getenv(portEnvName)
 			dbname := os.Getenv(dbEnvName)
 			user := os.Getenv(userEnvName)

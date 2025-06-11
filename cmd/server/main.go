@@ -49,7 +49,6 @@ func (s *server) Get(ctx context.Context, req *desc.GetRequest) (*desc.GetRespon
   log.Printf("User getting {Id: %d}",
     req.GetId(),
   )
-	
 		
 	var (
 		name       string
@@ -230,7 +229,7 @@ func (s *server) Delete(ctx context.Context, req *desc.DeleteRequest) (*emptypb.
 	}
 	defer tx.Rollback(ctx)
 
-	// Update user
+	// Deleting user
 	_, err = tx.Exec(ctx, queries.DeleteById, req.GetId())
 	if err != nil {
     log.Printf("failed to delete user: %v", err)
@@ -268,6 +267,7 @@ func main() {
 
 	// Create connection pool
 	dbPool, err := pgxpool.New(ctx, pgConfig.DSN())
+	log.Printf("pgConfig.DSN() = %s", pgConfig.DSN())
 	if err != nil {
 		log.Fatalf("failed to create connection pool: %s", err)
 	}

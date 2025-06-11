@@ -1,19 +1,17 @@
-version: '3'
-
 volumes:
-  postgres_volume:
+  postgres_volume_auth_service:
 
 services:
-  pg:
+  pg-auth:
     image: postgres:16-alpine3.20
     environment:
       - "POSTGRES_DB=${PG_DATABASE_NAME}"
       - "POSTGRES_USER=${PG_USER}"
       - "POSTGRES_PASSWORD=${PG_PASSWORD}"
     ports:
-      - "${PG_PORT}:5432"
+      - "${PG_PORT_OUTER}:${PG_PORT_INNER}"
     volumes:
-      - postgres_volume:/var/lib/postgresql/data
+      - postgres_volume_auth_service:/var/lib/postgresql/data
        
   migrator:
     build:
@@ -22,10 +20,13 @@ services:
 
     restart: on-failure
     environment:
-        DB_HOST: pg
+        DB_HOST: pg-auth
 
   auth-service:
     build: .
     ports:
-      - "50051:${GRPC_PORT}"
+      - "${GRPC_PORT}:${GRPC_PORT}"
     restart: unless-stopped
+    depends_on:
+      - pg-auth
+      - migrator
