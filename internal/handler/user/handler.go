@@ -22,7 +22,7 @@ func NewHandler(service service.UserService) desc.UserV1Server {
 }
 
 func (s *handler) Create(ctx context.Context, req *desc.CreateRequest) (*desc.CreateResponse, error) {
-	userID, err := s.service.Create(ctx, conventer.FromProtoToModelUser(req.GetUser()), req.GetPassword(), req.GetPasswordConfirm())
+	userID, err := s.service.Create(ctx, conventer.FromProtoToModelUserInfo(req.GetUserInfo()), req.GetPassword(), req.GetPasswordConfirm())
 	if err != nil {
 		return nil, err
 	}

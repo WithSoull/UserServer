@@ -21,21 +21,21 @@ func NewService(repo repository.UserRepository) *service {
 	}
 }
 
-func (s *service) Create(ctx context.Context, user model.User, password, passwordConfirm string) (int64, error) {
+func (s *service) Create(ctx context.Context, userInfo model.UserInfo, password, passwordConfirm string) (int64, error) {
 	// Input validation
-	if user.Name == "" {
+	if userInfo.Name == "" {
 			return 0, status.Errorf(codes.InvalidArgument, "name is required")
 	}
-	if user.Email == "" {
+	if userInfo.Email == "" {
 			return 0, status.Errorf(codes.InvalidArgument, "email is required")
 	}
-	if !utils.IsValidEmail(user.Email) {
+	if !utils.IsValidEmail(userInfo.Email) {
 			return 0, status.Errorf(codes.InvalidArgument, "invalid email format")
 	}
 	if password == "" {
 			return 0, status.Errorf(codes.InvalidArgument, "password is required")
 	}
-	if user.Role < 0 && user.Role > 1 { // Assuming role is an enum with positive values
+	if userInfo.Role < 0 && userInfo.Role > 1 { // Assuming role is an enum with positive values
 			return 0, status.Errorf(codes.InvalidArgument, "invalid role")
 	}
 	
@@ -44,7 +44,7 @@ func (s *service) Create(ctx context.Context, user model.User, password, passwor
 		return 0, err
 	}
 
-	id, err := s.repo.Create(ctx, &user, hashedPassword)
+	id, err := s.repo.Create(ctx, &userInfo, hashedPassword)
 	if err != nil {
 		return 0, err
 	}

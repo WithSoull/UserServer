@@ -21,17 +21,21 @@ enum Role {
   ADMIN = 1;
 }
 
-message User {
-  int64 id = 1;
+message UserInfo {
   string name = 2;
   string email = 3;
   Role role = 4;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp updated_at = 6;
+}
+
+message User {
+  int64 id = 1;
+  UserInfo user_info = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
 }
 
 message CreateRequest {
-  User user = 1;
+  UserInfo user_info = 1;
   string password = 2;
   string password_confirm = 3;
 }

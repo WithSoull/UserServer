@@ -26,7 +26,7 @@ func NewRepository(db *pgxpool.Pool) repository.UserRepository {
 	return &repo{db: db}	
 }
 
-func (r *repo) Create(ctx context.Context, user *model.User, hashedPassword string)  (int64, error) {
+func (r *repo) Create(ctx context.Context, user *model.UserInfo, hashedPassword string)  (int64, error) {
 	// Begin transaction
 	tx, err := r.db.Begin(ctx)
 	if err != nil {
@@ -87,9 +87,11 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 
   return &model.User{
 		Id: id,
-    Name: name,
-    Email: email,
-		Role: conventer.FromStringToRole(roleStr),
+		UserInfo: model.UserInfo{
+			Name: name,
+			Email: email,
+			Role: conventer.FromStringToRole(roleStr),
+		},
 		CreatedAt: createdAt,
 		UpdatedAt: updatedAt,
   }, nil
