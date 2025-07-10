@@ -4,10 +4,15 @@ import "time"
 
 type Role int32
 
+const (
+	ROLE_USER Role = 0
+	ROLE_ADMIN Role = 1
+)
+
 type UserInfo struct {
 	Name string
 	Email string
-	Role string
+	Role Role
 }
 
 type User struct {

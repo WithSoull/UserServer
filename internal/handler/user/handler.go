@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"log"
 
 	conventer "github.com/WithSoull/AuthService/internal/conventer/user"
 	"github.com/WithSoull/AuthService/internal/service"
@@ -54,6 +55,17 @@ func (s *handler) Update(ctx context.Context, req *desc.UpdateRequest) (*emptypb
 		email = &req.GetEmail().Value
 	}
 
+	if name != nil {
+		log.Printf("[DEBUG|Handler layer] name  = %v, *name  = %s", name, *name)
+	} else {
+		log.Printf("[DEBUG|Handler layer] name is nil")
+	}
+
+	if email != nil {
+		log.Printf("[DEBUG|Handler layer] email = %v, *email = %s", email, *email)
+	} else {
+		log.Printf("[DEBUG|Handler layer] email is nil")
+	}
 	return &emptypb.Empty{}, s.service.Update(ctx, req.GetId(), name, email)
 }
 

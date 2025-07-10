@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	conventer "github.com/WithSoull/AuthService/internal/conventer/user"
 	"github.com/WithSoull/AuthService/internal/queries"
 	"github.com/WithSoull/AuthService/internal/repository"
 	"github.com/WithSoull/AuthService/internal/repository/user/model"
@@ -42,7 +41,7 @@ func (r *repo) Create(ctx context.Context, user *model.UserInfo, hashedPassword 
 			user.Name,
 			user.Email,
 			hashedPassword,
-			conventer.FromRoleToString(user.Role),
+			user.Role,
 	).Scan(&userID)
 	if err != nil {
 		if strings.Contains(err.Error(), "unique constraint") {
@@ -66,14 +65,14 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 	var (
 		name       string
 		email      string
-		roleStr    string
+		role       string
 		createdAt  time.Time
 		updatedAt  time.Time
 	)
 	err := r.db.QueryRow(ctx, queries.SelectById, id).Scan(
 		&name,
 		&email,
-		&roleStr,
+		&role,
 		&createdAt,
 		&updatedAt,
 	)
@@ -90,7 +89,7 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 		UserInfo: model.UserInfo{
 			Name: name,
 			Email: email,
-			Role: conventer.FromStringToRole(roleStr),
+			Role: role,
 		},
 		CreatedAt: createdAt,
 		UpdatedAt: updatedAt,
