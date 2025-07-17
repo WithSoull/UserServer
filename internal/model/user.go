@@ -5,7 +5,7 @@ import "time"
 type Role int32
 
 const (
-	ROLE_USER Role = 0
+	ROLE_USER  Role = 0
 	ROLE_ADMIN Role = 1
 )
 
