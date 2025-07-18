@@ -7,6 +7,7 @@ import (
 
 	"github.com/WithSoull/AuthService/internal/client/db"
 	"github.com/WithSoull/AuthService/internal/client/db/prettier"
+	"github.com/WithSoull/AuthService/internal/contextx/txctx"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgx/v4"
@@ -48,12 +49,21 @@ func (p *pg) ScanAllContext(ctx context.Context, dest interface{}, q db.Query, a
 func (p *pg) ExecContext(ctx context.Context, q db.Query, args ...interface{}) (pgconn.CommandTag, error) {
 	logQuery(ctx, q, args...)
 
+	tx, ok := txctx.ExtractTx(ctx)
+	if ok {
+		return tx.Exec(ctx, q.QueryRaw, args...)
+	}
+
 	return p.dbc.Exec(ctx, q.QueryRaw, args...)
 }
 
 func (p *pg) QueryContext(ctx context.Context, q db.Query, args ...interface{}) (pgx.Rows, error) {
 	logQuery(ctx, q, args...)
 
+	tx, ok := txctx.ExtractTx(ctx)
+	if ok {
+		return tx.Query(ctx, q.QueryRaw, args)
+	}
 
 	return p.dbc.Query(ctx, q.QueryRaw, args...)
 }
@@ -61,12 +71,20 @@ func (p *pg) QueryContext(ctx context.Context, q db.Query, args ...interface{}) 
 func (p *pg) QueryRowContext(ctx context.Context, q db.Query, args ...interface{}) pgx.Row {
 	logQuery(ctx, q, args...)
 
+	tx, ok := txctx.ExtractTx(ctx)
+	if ok {
+		return tx.QueryRow(ctx, q.QueryRaw, args)
+	}
 
 	return p.dbc.QueryRow(ctx, q.QueryRaw, args...)
 }
 
 func (p *pg) Ping(ctx context.Context) error {
 	return p.dbc.QueryRow(ctx, "SELECT 1").Scan(new(int))
+}
+
+func (p *pg) BeginTx(ctx context.Context, txOptions pgx.TxOptions) (pgx.Tx, error) {
+	return p.dbc.BeginTx(ctx, txOptions)
 }
 
 func (p *pg) Close() {

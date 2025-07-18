@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"time"
 
 	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
@@ -11,7 +12,7 @@ import (
 )
 
 func (r *repo) Update(ctx context.Context, id int64, name, email *string) error {
-	builder := sq.Update(tableName).PlaceholderFormat(squirrel.Dollar)
+	builder := sq.Update(usersTableName).PlaceholderFormat(squirrel.Dollar)
 
 	if name != nil {
 		builder = builder.Set(nameColumn, *name)
@@ -23,7 +24,8 @@ func (r *repo) Update(ctx context.Context, id int64, name, email *string) error 
 		return status.Errorf(codes.InvalidArgument, "no fields to update")
 	}
 
-	builder = builder.Where(squirrel.Eq{idColumn: id})
+	builder = builder.Set(updatedAtColumn, time.Now())
+	builder = builder.Where(sq.Eq{idColumn: id})
 
 	query, args, err := builder.ToSql()
 	if err != nil {
@@ -35,6 +37,6 @@ func (r *repo) Update(ctx context.Context, id int64, name, email *string) error 
 		QueryRaw: query,
 	}
 
-	_, err = r.db.DB().ExecContext(ctx, q, args)
+	_, err = r.db.DB().ExecContext(ctx, q, args...)
 	return err
 }

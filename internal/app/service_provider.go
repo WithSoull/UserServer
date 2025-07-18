@@ -6,6 +6,7 @@ import (
 
 	"github.com/WithSoull/AuthService/internal/client/db"
 	"github.com/WithSoull/AuthService/internal/client/db/pg"
+	"github.com/WithSoull/AuthService/internal/client/db/transaction"
 	"github.com/WithSoull/AuthService/internal/closer"
 	"github.com/WithSoull/AuthService/internal/config"
 	"github.com/WithSoull/AuthService/internal/config/env"
@@ -21,7 +22,8 @@ type serviceProvider struct {
 	pgConfig   config.PGCongif
 	grpcConfig config.GRPCCongif
 
-	pgClient *db.Client
+	pgClient  db.Client
+	txManager db.TxManager
 
 	userRepository repository.UserRepository
 	userService    service.UserService
@@ -58,7 +60,7 @@ func (s *serviceProvider) GRPCConfig() config.GRPCCongif {
 	return s.grpcConfig
 }
 
-func (s *serviceProvider) PGClient(ctx context.Context) *db.Client {
+func (s *serviceProvider) PGClient(ctx context.Context) db.Client {
 	if s.pgClient == nil {
 		client, err := pg.NewPGClient(ctx, s.PGConfig().DSN())
 		if err != nil {
@@ -74,7 +76,7 @@ func (s *serviceProvider) PGClient(ctx context.Context) *db.Client {
 			return nil
 		})
 
-		s.pgClient = &client
+		s.pgClient = client
 	}
 
 	return s.pgClient
@@ -82,15 +84,23 @@ func (s *serviceProvider) PGClient(ctx context.Context) *db.Client {
 
 func (s *serviceProvider) UserRepository(ctx context.Context) repository.UserRepository {
 	if s.userRepository == nil {
-		s.userRepository = userRepository.NewRepository(*s.PGClient(ctx))
+		s.userRepository = userRepository.NewRepository(s.PGClient(ctx))
 	}
 
 	return s.userRepository
 }
 
+func (s *serviceProvider) TxManager(ctx context.Context) db.TxManager {
+	if s.txManager == nil {
+		s.txManager = transaction.NewTransactionManager(s.PGClient(ctx).DB())
+	}
+
+	return s.txManager
+}
+
 func (s *serviceProvider) UserService(ctx context.Context) service.UserService {
 	if s.userService == nil {
-		s.userService = userService.NewService(s.UserRepository(ctx))
+		s.userService = userService.NewService(s.UserRepository(ctx), s.TxManager(ctx))
 	}
 
 	return s.userService

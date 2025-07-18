@@ -9,7 +9,7 @@ import (
 )
 
 func (r *repo) Delete(ctx context.Context, id int64) error {
-	builder := sq.Delete(tableName).
+	builder := sq.Delete(usersTableName).
 		PlaceholderFormat(squirrel.Dollar).
 		Where(sq.Eq{"id": id})
 
@@ -23,6 +23,6 @@ func (r *repo) Delete(ctx context.Context, id int64) error {
 		QueryRaw: query,
 	}
 
-	_, err = r.db.DB().ExecContext(ctx, q, args)
+	_, err = r.db.DB().ExecContext(ctx, q, args...)
 	return err
 }

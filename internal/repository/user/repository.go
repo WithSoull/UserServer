@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	tableName = "users"
+	usersTableName = "users"
 
 	idColumn        = "id"
 	nameColumn      = "name"
@@ -15,6 +15,13 @@ const (
 	passwordColumn  = "password"
 	createdAtColumn = "created_at"
 	updatedAtColumn = "updated_at"
+
+	passwordLogsTableName = "password_change_logs"
+
+	passwordLogsIdColumn        = "id"
+	passwordLogsUserIdColumn    = "user_id"
+	passwordLogsChangedAtColumn = "changed_at"
+	passwordLogsIpAddressColumn = "ip_address"
 )
 
 type repo struct {

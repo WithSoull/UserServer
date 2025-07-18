@@ -15,7 +15,7 @@ import (
 
 func (r *repo) Create(ctx context.Context, userInfo *model.UserInfo, hashedPassword string) (int64, error) {
 	userInfoRepo := conventer.FromModelToRepoUserInfo(userInfo)
-	builder := sq.Insert(tableName).
+	builder := sq.Insert(usersTableName).
 		PlaceholderFormat(sq.Dollar).
 		Columns(nameColumn, emailColumn, passwordColumn, roleColumn).
 		Values(userInfoRepo.Name, userInfoRepo.Email, hashedPassword, userInfoRepo.Role).

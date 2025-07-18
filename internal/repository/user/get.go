@@ -18,7 +18,7 @@ import (
 func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 	builder := sq.Select(idColumn, nameColumn, emailColumn, roleColumn, createdAtColumn, updatedAtColumn).
 		PlaceholderFormat(sq.Dollar).
-		From(tableName).
+		From(usersTableName).
 		Where(sq.Eq{idColumn: id}).
 		Limit(1)
 
