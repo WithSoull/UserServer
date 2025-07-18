@@ -14,6 +14,6 @@ func (s *handler) Get(ctx context.Context, req *desc.GetRequest) (*desc.GetRespo
 	}
 
 	return &desc.GetResponse{
-		User: conventer.FromModelToProtoUser(*user), 
+		User: conventer.FromModelToProtoUser(*user),
 	}, nil
 }

@@ -10,4 +10,3 @@ import (
 func (s *handler) Delete(ctx context.Context, req *desc.DeleteRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, s.service.Delete(ctx, req.GetId())
 }
-

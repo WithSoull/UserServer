@@ -4,27 +4,30 @@ import (
 	"context"
 	"log"
 
+	"github.com/WithSoull/AuthService/internal/client/db"
+	"github.com/WithSoull/AuthService/internal/client/db/pg"
+	"github.com/WithSoull/AuthService/internal/client/db/transaction"
 	"github.com/WithSoull/AuthService/internal/closer"
 	"github.com/WithSoull/AuthService/internal/config"
 	"github.com/WithSoull/AuthService/internal/config/env"
+	userHandler "github.com/WithSoull/AuthService/internal/handler/user"
 	"github.com/WithSoull/AuthService/internal/repository"
 	userRepository "github.com/WithSoull/AuthService/internal/repository/user"
-	userService "github.com/WithSoull/AuthService/internal/service/user"
-	userHandler "github.com/WithSoull/AuthService/internal/handler/user"
 	"github.com/WithSoull/AuthService/internal/service"
+	userService "github.com/WithSoull/AuthService/internal/service/user"
 	desc "github.com/WithSoull/AuthService/pkg/user/v1"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type serviceProvider struct {
-	pgConfig config.PGCongif
+	pgConfig   config.PGCongif
 	grpcConfig config.GRPCCongif
 
-	pgPool *pgxpool.Pool
+	pgClient  db.Client
+	txManager db.TxManager
 
 	userRepository repository.UserRepository
-	userService service.UserService
-	userHandler desc.UserV1Server
+	userService    service.UserService
+	userHandler    desc.UserV1Server
 }
 
 func newServiceProvider() *serviceProvider {
@@ -57,39 +60,47 @@ func (s *serviceProvider) GRPCConfig() config.GRPCCongif {
 	return s.grpcConfig
 }
 
-func (s *serviceProvider) PGPool(ctx context.Context) *pgxpool.Pool {
-	if s.pgPool == nil {
-		pool, err := pgxpool.New(ctx, s.PGConfig().DSN())
+func (s *serviceProvider) PGClient(ctx context.Context) db.Client {
+	if s.pgClient == nil {
+		client, err := pg.NewPGClient(ctx, s.PGConfig().DSN())
 		if err != nil {
 			log.Fatalf("failed to create connection pool: %s", err.Error())
 		}
 
-		if err := pool.Ping(ctx); err != nil {
+		if err := client.DB().Ping(ctx); err != nil {
 			log.Fatalf("failed to connect to database: %v", err.Error())
 		}
 
 		closer.Add(func() error {
-				pool.Close()
-				return nil
-			})
+			client.Close()
+			return nil
+		})
 
-		s.pgPool = pool
+		s.pgClient = client
 	}
 
-	return s.pgPool
+	return s.pgClient
 }
 
 func (s *serviceProvider) UserRepository(ctx context.Context) repository.UserRepository {
 	if s.userRepository == nil {
-		s.userRepository = userRepository.NewRepository(s.PGPool(ctx))
+		s.userRepository = userRepository.NewRepository(s.PGClient(ctx))
 	}
 
 	return s.userRepository
 }
 
+func (s *serviceProvider) TxManager(ctx context.Context) db.TxManager {
+	if s.txManager == nil {
+		s.txManager = transaction.NewTransactionManager(s.PGClient(ctx).DB())
+	}
+
+	return s.txManager
+}
+
 func (s *serviceProvider) UserService(ctx context.Context) service.UserService {
 	if s.userService == nil {
-		s.userService = userService.NewService(s.UserRepository(ctx))
+		s.userService = userService.NewService(s.UserRepository(ctx), s.TxManager(ctx))
 	}
 
 	return s.userService
