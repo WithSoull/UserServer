@@ -3,14 +3,13 @@ package user
 import (
 	"context"
 
-	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/AuthService/internal/client/db"
 )
 
 func (r *repo) Delete(ctx context.Context, id int64) error {
 	builder := sq.Delete(usersTableName).
-		PlaceholderFormat(squirrel.Dollar).
+		PlaceholderFormat(sq.Dollar).
 		Where(sq.Eq{"id": id})
 
 	query, args, err := builder.ToSql()

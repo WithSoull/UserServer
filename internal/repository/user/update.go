@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/AuthService/internal/client/db"
 	"google.golang.org/grpc/codes"
@@ -12,7 +11,7 @@ import (
 )
 
 func (r *repo) Update(ctx context.Context, id int64, name, email *string) error {
-	builder := sq.Update(usersTableName).PlaceholderFormat(squirrel.Dollar)
+	builder := sq.Update(usersTableName).PlaceholderFormat(sq.Dollar)
 
 	if name != nil {
 		builder = builder.Set(nameColumn, *name)

@@ -23,7 +23,7 @@ func Pretty(query string, placeholder string, args ...any) string {
 			value = fmt.Sprintf("%v", v)
 		}
 
-		query = strings.Replace(query, fmt.Sprintf("%s%s", placeholder, strconv.Itoa(i+1)), value, -1)
+		query = strings.ReplaceAll(query, fmt.Sprintf("%s%s", placeholder, strconv.Itoa(i+1)), value)
 	}
 
 	query = strings.ReplaceAll(query, "\t", "")

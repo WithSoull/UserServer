@@ -5,14 +5,13 @@ import (
 	"log"
 	"time"
 
-	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/AuthService/internal/client/db"
 )
 
 func (r *repo) UpdatePassword(ctx context.Context, id int64, hashedPassword string) error {
 	builder := sq.Update(usersTableName).
-		PlaceholderFormat(squirrel.Dollar).
+		PlaceholderFormat(sq.Dollar).
 		Set(passwordColumn, hashedPassword).
 		Set(updatedAtColumn, time.Now()).
 		Where(sq.Eq{idColumn: id})
@@ -33,7 +32,7 @@ func (r *repo) UpdatePassword(ctx context.Context, id int64, hashedPassword stri
 
 func (r *repo) LogPassword(ctx context.Context, id int64, ip_address string) error {
 	builder := sq.Insert(passwordLogsTableName).
-		PlaceholderFormat(squirrel.Dollar).
+		PlaceholderFormat(sq.Dollar).
 		Columns(passwordLogsUserIdColumn, passwordLogsIpAddressColumn).
 		Values(id, ip_address)
 

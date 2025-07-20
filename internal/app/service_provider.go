@@ -72,8 +72,7 @@ func (s *serviceProvider) PGClient(ctx context.Context) db.Client {
 		}
 
 		closer.Add(func() error {
-			client.Close()
-			return nil
+			return client.Close()
 		})
 
 		s.pgClient = client
