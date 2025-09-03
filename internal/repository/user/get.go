@@ -16,7 +16,7 @@ import (
 )
 
 func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
-	builder := sq.Select(idColumn, nameColumn, emailColumn, roleColumn, createdAtColumn, updatedAtColumn).
+	builder := sq.Select(idColumn, nameColumn, emailColumn, createdAtColumn, updatedAtColumn).
 		PlaceholderFormat(sq.Dollar).
 		From(usersTableName).
 		Where(sq.Eq{idColumn: id}).

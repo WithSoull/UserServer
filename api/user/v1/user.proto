@@ -16,15 +16,9 @@ service UserV1 {
   rpc Delete(DeleteRequest) returns (google.protobuf.Empty);
 }
 
-enum Role {
-  USER = 0;
-  ADMIN = 1;
-}
-
 message UserInfo {
   string name = 1;
   string email = 2;
-  Role role = 3;
 }
 
 message User {
