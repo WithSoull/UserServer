@@ -17,8 +17,8 @@ func (r *repo) Create(ctx context.Context, userInfo *model.UserInfo, hashedPassw
 	userInfoRepo := conventer.FromModelToRepoUserInfo(userInfo)
 	builder := sq.Insert(usersTableName).
 		PlaceholderFormat(sq.Dollar).
-		Columns(nameColumn, emailColumn, passwordColumn, roleColumn).
-		Values(userInfoRepo.Name, userInfoRepo.Email, hashedPassword, userInfoRepo.Role).
+		Columns(nameColumn, emailColumn, passwordColumn).
+		Values(userInfoRepo.Name, userInfoRepo.Email, hashedPassword).
 		Suffix("RETURNING id")
 
 	query, args, err := builder.ToSql()
