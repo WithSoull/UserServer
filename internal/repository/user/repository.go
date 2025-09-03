@@ -11,7 +11,6 @@ const (
 	idColumn        = "id"
 	nameColumn      = "name"
 	emailColumn     = "email"
-	roleColumn      = "role"
 	passwordColumn  = "password"
 	createdAtColumn = "created_at"
 	updatedAtColumn = "updated_at"

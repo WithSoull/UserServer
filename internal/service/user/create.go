@@ -23,9 +23,6 @@ func (s *service) Create(ctx context.Context, userInfo model.UserInfo, password,
 	if password == "" {
 		return 0, status.Errorf(codes.InvalidArgument, "password is required")
 	}
-	if userInfo.Role < 0 && userInfo.Role > 1 { // Assuming role is an enum with positive values
-		return 0, status.Errorf(codes.InvalidArgument, "invalid role")
-	}
 
 	hashedPassword, err := s.hashPassword(password, passwordConfirm)
 	if err != nil {
