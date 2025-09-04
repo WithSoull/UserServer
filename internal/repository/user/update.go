@@ -2,13 +2,13 @@ package user
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/AuthService/internal/client/db"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
 )
 
 func (r *repo) Update(ctx context.Context, id int64, name, email *string) error {
@@ -21,7 +21,7 @@ func (r *repo) Update(ctx context.Context, id int64, name, email *string) error 
 		builder = builder.Set(emailColumn, *email)
 	}
 	if name == nil && email == nil {
-		return status.Errorf(codes.InvalidArgument, "no fields to update")
+		return fmt.Errorf("%w: %s", domainerrors.ErrInvalidInput, "no fields to update")
 	}
 
 	builder = builder.Set(updatedAtColumn, time.Now())
@@ -37,6 +37,14 @@ func (r *repo) Update(ctx context.Context, id int64, name, email *string) error 
 		QueryRaw: query,
 	}
 
-	_, err = r.db.DB().ExecContext(ctx, q, args...)
+	result, err := r.db.DB().ExecContext(ctx, q, args...)
+	if err != nil {
+		return err
+	}
+	rowsAffected := result.RowsAffected()
+	if rowsAffected == 0 {
+		return domainerrors.ErrUserNotFound
+	}
+
 	return err
 }

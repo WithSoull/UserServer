@@ -2,7 +2,9 @@ package user
 
 import (
 	"context"
+	"log"
 
+	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
 	"github.com/WithSoull/AuthService/internal/model"
 	"github.com/WithSoull/AuthService/internal/utils"
 	"google.golang.org/grpc/codes"
@@ -24,14 +26,18 @@ func (s *service) Create(ctx context.Context, userInfo model.UserInfo, password,
 		return 0, status.Errorf(codes.InvalidArgument, "password is required")
 	}
 
-	hashedPassword, err := s.hashPassword(password, passwordConfirm)
+	hashedPassword, err := s.validateAndHashPassword(password, passwordConfirm)
 	if err != nil {
 		return 0, err
 	}
 
 	id, err := s.repo.Create(ctx, &userInfo, hashedPassword)
 	if err != nil {
-		return 0, err
+		isLogNeeded, grpcErr := domainerrors.ToGRPCStatus(err)
+		if isLogNeeded {
+			log.Printf("[Service Layer] failed to create user: %v", err)
+		}
+		return 0, grpcErr
 	}
 
 	return id, nil

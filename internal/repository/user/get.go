@@ -2,17 +2,15 @@ package user
 
 import (
 	"context"
-	"database/sql"
 	"errors"
-	"log"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/AuthService/internal/client/db"
+	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
 	model "github.com/WithSoull/AuthService/internal/model"
 	"github.com/WithSoull/AuthService/internal/repository/user/conventer"
 	modelRepo "github.com/WithSoull/AuthService/internal/repository/user/model"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/jackc/pgx/v4"
 )
 
 func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
@@ -35,11 +33,10 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 	var user modelRepo.User
 	err = r.db.DB().ScanOneContext(ctx, &user, q, args...)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, status.Errorf(codes.NotFound, "user not found")
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domainerrors.ErrUserNotFound
 		}
-		log.Printf("failed to get user from db: %v", err)
-		return nil, status.Errorf(codes.Internal, "failed to get user")
+		return nil, err
 	}
 
 	return conventer.FromRepoToModelUser(&user), nil

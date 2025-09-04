@@ -6,6 +6,7 @@ import (
 	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/AuthService/internal/client/db"
+	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
 )
 
 func (r *repo) Delete(ctx context.Context, id int64) error {
@@ -23,6 +24,15 @@ func (r *repo) Delete(ctx context.Context, id int64) error {
 		QueryRaw: query,
 	}
 
-	_, err = r.db.DB().ExecContext(ctx, q, args...)
-	return err
+	result, err := r.db.DB().ExecContext(ctx, q, args...)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected := result.RowsAffected()
+	if rowsAffected == 0 {
+		return domainerrors.ErrUserNotFound
+	}
+
+	return nil
 }

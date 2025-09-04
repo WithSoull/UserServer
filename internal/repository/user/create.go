@@ -2,15 +2,14 @@ package user
 
 import (
 	"context"
-	"log"
-	"strings"
+	"errors"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/AuthService/internal/client/db"
+	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
 	model "github.com/WithSoull/AuthService/internal/model"
 	"github.com/WithSoull/AuthService/internal/repository/user/conventer"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/jackc/pgconn"
 )
 
 func (r *repo) Create(ctx context.Context, userInfo *model.UserInfo, hashedPassword string) (int64, error) {
@@ -34,14 +33,12 @@ func (r *repo) Create(ctx context.Context, userInfo *model.UserInfo, hashedPassw
 	var userID int64
 
 	err = r.db.DB().QueryRowContext(ctx, q, args...).Scan(&userID)
-
 	if err != nil {
-		if strings.Contains(err.Error(), "unique constraint") {
-			return 0, status.Errorf(codes.AlreadyExists, "this email already used")
-		} else {
-			log.Printf("failed to insert user in db: %v", err)
-			return 0, status.Errorf(codes.Internal, "failed to create user")
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return 0, domainerrors.ErrEmailAlreadyExists
 		}
+		return 0, err
 	}
 
 	return userID, nil
