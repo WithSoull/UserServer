@@ -13,7 +13,7 @@ install-deps:
 	GOBIN=$(LOCAL_BIN) go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28.1
 	GOBIN=$(LOCAL_BIN) go install -mod=mod google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 	GOBIN=$(LOCAL_BIN) go install github.com/pressly/goose/v3/cmd/goose@v3.14.0
-	GOBIN=$(LOCAL_BIN) go install github.com/gojuno/minimock/v3/cmd/minimock@latest
+	GOBIN=$(LOCAL_BIN) go install github.com/gojuno/minimock/v3/cmd/minimock@v3.3.5
 
 get-deps:
 	go get -u google.golang.org/protobuf/cmd/protoc-gen-go
@@ -21,6 +21,7 @@ get-deps:
 	go get -u github.com/jackc/pgx/v5
 	go get -u google.golang.org/grpc
 	go get -u golang.org/x/crypto
+	go get -u github.com/gojuno/minimock/v3
 
 generate-api:
 	mkdir -p pkg/user/v1
