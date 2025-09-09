@@ -6,9 +6,9 @@ import (
 	"log"
 	"net"
 
-	"github.com/WithSoull/AuthService/internal/closer"
 	"github.com/WithSoull/AuthService/internal/config"
 	desc "github.com/WithSoull/AuthService/pkg/user/v1"
+	"github.com/WithSoull/platform_common/pkg/closer"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"

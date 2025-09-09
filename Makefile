@@ -18,10 +18,12 @@ install-deps:
 get-deps:
 	go get -u google.golang.org/protobuf/cmd/protoc-gen-go
 	go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
-	go get -u github.com/jackc/pgx/v5
+	go get -u github.com/jackc/pgx/v4
+	go get -u github.com/jackc/pgconn
 	go get -u google.golang.org/grpc
 	go get -u golang.org/x/crypto
 	go get -u github.com/gojuno/minimock/v3
+	go get -u github.com/WithSoull/platform_common
 
 generate-api:
 	mkdir -p pkg/user/v1

@@ -7,7 +7,7 @@ import (
 
 	"github.com/WithSoull/AuthService/internal/client/db"
 	"github.com/WithSoull/AuthService/internal/client/db/prettier"
-	"github.com/WithSoull/AuthService/internal/contextx/txctx"
+	"github.com/WithSoull/platform_common/pkg/contextx/txctx"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgx/v4"

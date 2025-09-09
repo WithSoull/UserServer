@@ -7,7 +7,6 @@ import (
 	"github.com/WithSoull/AuthService/internal/client/db"
 	"github.com/WithSoull/AuthService/internal/client/db/pg"
 	"github.com/WithSoull/AuthService/internal/client/db/transaction"
-	"github.com/WithSoull/AuthService/internal/closer"
 	"github.com/WithSoull/AuthService/internal/config"
 	"github.com/WithSoull/AuthService/internal/config/env"
 	userHandler "github.com/WithSoull/AuthService/internal/handler/user"
@@ -16,6 +15,7 @@ import (
 	"github.com/WithSoull/AuthService/internal/service"
 	userService "github.com/WithSoull/AuthService/internal/service/user"
 	desc "github.com/WithSoull/AuthService/pkg/user/v1"
+	"github.com/WithSoull/platform_common/pkg/closer"
 )
 
 type serviceProvider struct {

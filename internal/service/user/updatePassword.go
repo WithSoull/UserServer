@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/WithSoull/AuthService/internal/contextx/ipctx"
+	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
 	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
