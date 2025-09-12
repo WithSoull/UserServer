@@ -26,6 +26,7 @@ services:
     build: .
     ports:
       - "${GRPC_PORT}:${GRPC_PORT}"
+      - "${HTTP_PORT}:${HTTP_PORT}"
     restart: unless-stopped
     depends_on:
       - pg-auth

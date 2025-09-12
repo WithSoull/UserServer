@@ -7,10 +7,9 @@ import (
 	"github.com/WithSoull/AuthService/internal/app"
 )
 
-
 func main() {
-	ctx := context.Background()	
-	
+	ctx := context.Background()
+
 	a, err := app.NewApp(ctx)
 	if err != nil {
 		log.Fatalf("failed to init app: %s", err.Error())
