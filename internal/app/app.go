@@ -13,6 +13,7 @@ import (
 	"github.com/WithSoull/platform_common/pkg/closer"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 )
@@ -105,7 +106,12 @@ func (a *App) initServiceProvider(_ context.Context) error {
 }
 
 func (a *App) initGRPCServer(ctx context.Context) error {
-	a.grpcServer = grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
+	creds, err := credentials.NewServerTLSFromFile("service.pem", "service.key")
+	if err != nil {
+		log.Fatalf("failed to load TLS keys: %v", err)
+	}
+
+	a.grpcServer = grpc.NewServer(grpc.Creds(creds))
 
 	reflection.Register(a.grpcServer)
 

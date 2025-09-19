@@ -2,3 +2,6 @@
 /bin/
 .env
 /vendor.protogen/
+*.key
+*.srl
+*.csr

@@ -10,5 +10,9 @@ FROM alpine:3.21
 WORKDIR /root/
 COPY --from=builder /auth-service/bin/auth-server .
 COPY .env .
+COPY service.pem .
+COPY service.key .
+COPY ca.cert .
+
 
 CMD ["./auth-server"]
