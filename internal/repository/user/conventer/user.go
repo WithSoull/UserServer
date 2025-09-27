@@ -1,8 +1,8 @@
 package conventer
 
 import (
-	"github.com/WithSoull/AuthService/internal/model"
-	modelRepo "github.com/WithSoull/AuthService/internal/repository/user/model"
+	"github.com/WithSoull/UserServer/internal/model"
+	modelRepo "github.com/WithSoull/UserServer/internal/repository/user/model"
 )
 
 func FromRepoToModelUserInfo(userInfo *modelRepo.UserInfo) *model.UserInfo {

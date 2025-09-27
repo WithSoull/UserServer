@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
-	conventer "github.com/WithSoull/AuthService/internal/conventer/user"
-	desc "github.com/WithSoull/AuthService/pkg/user/v1"
+	conventer "github.com/WithSoull/UserServer/internal/conventer/user"
+	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 )
 
 func (s *handler) Get(ctx context.Context, req *desc.GetRequest) (*desc.GetResponse, error) {

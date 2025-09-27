@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/WithSoull/AuthService/internal/config"
-	desc "github.com/WithSoull/AuthService/pkg/user/v1"
+	"github.com/WithSoull/UserServer/internal/config"
+	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 	"github.com/WithSoull/platform_common/pkg/closer"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

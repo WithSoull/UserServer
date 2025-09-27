@@ -1,8 +1,8 @@
 package user
 
 import (
-	"github.com/WithSoull/AuthService/internal/model"
-	pb "github.com/WithSoull/AuthService/pkg/user/v1"
+	"github.com/WithSoull/UserServer/internal/model"
+	pb "github.com/WithSoull/UserServer/pkg/user/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

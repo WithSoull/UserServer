@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 import "google/api/annotations.proto";
 
 
-option go_package = "github.com/WithSoull/AuthService/pkg/user/v1;user_v1";
+option go_package = "github.com/WithSoull/UserServer/pkg/user/v1;user_v1";
 
 service UserV1 {
   rpc Create(CreateRequest) returns (CreateResponse){

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/WithSoull/AuthService/internal/client/db"
-	"github.com/WithSoull/AuthService/internal/client/db/prettier"
+	"github.com/WithSoull/UserServer/internal/client/db"
+	"github.com/WithSoull/UserServer/internal/client/db/prettier"
 	"github.com/WithSoull/platform_common/pkg/contextx/txctx"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/jackc/pgconn"

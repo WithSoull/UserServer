@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/WithSoull/AuthService/internal/config"
+	"github.com/WithSoull/UserServer/internal/config"
 )
 
 const (

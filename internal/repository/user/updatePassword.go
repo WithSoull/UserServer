@@ -6,8 +6,8 @@ import (
 
 	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/WithSoull/AuthService/internal/client/db"
-	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
+	"github.com/WithSoull/UserServer/internal/client/db"
+	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 )
 
 func (r *repo) UpdatePassword(ctx context.Context, id int64, hashedPassword string) error {

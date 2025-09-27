@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/WithSoull/AuthService/internal/model"
+	"github.com/WithSoull/UserServer/internal/model"
 )
 
 type UserRepository interface {

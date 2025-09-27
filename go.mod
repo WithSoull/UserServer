@@ -1,4 +1,4 @@
-module github.com/WithSoull/AuthService
+module github.com/WithSoull/UserServer
 
 go 1.24.1
 

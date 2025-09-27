@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
-	"github.com/WithSoull/AuthService/internal/model"
-	"github.com/WithSoull/AuthService/internal/utils"
+	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
+	"github.com/WithSoull/UserServer/internal/model"
+	"github.com/WithSoull/UserServer/internal/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

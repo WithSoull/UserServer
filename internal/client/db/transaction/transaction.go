@@ -3,7 +3,7 @@ package transaction
 import (
 	"context"
 
-	"github.com/WithSoull/AuthService/internal/client/db"
+	"github.com/WithSoull/UserServer/internal/client/db"
 	"github.com/WithSoull/platform_common/pkg/contextx/txctx"
 	"github.com/jackc/pgx/v4"
 	"github.com/pkg/errors"

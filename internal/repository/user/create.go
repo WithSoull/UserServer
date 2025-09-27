@@ -5,10 +5,10 @@ import (
 	"errors"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/WithSoull/AuthService/internal/client/db"
-	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
-	model "github.com/WithSoull/AuthService/internal/model"
-	"github.com/WithSoull/AuthService/internal/repository/user/conventer"
+	"github.com/WithSoull/UserServer/internal/client/db"
+	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
+	model "github.com/WithSoull/UserServer/internal/model"
+	"github.com/WithSoull/UserServer/internal/repository/user/conventer"
 	"github.com/jackc/pgconn"
 )
 

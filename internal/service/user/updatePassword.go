@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
-	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
+	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

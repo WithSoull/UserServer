@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/WithSoull/AuthService/internal/app"
+	"github.com/WithSoull/UserServer/internal/app"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/WithSoull/AuthService/internal/model"
+	"github.com/WithSoull/UserServer/internal/model"
 )
 
 

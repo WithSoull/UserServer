@@ -1,8 +1,8 @@
 package user
 
 import (
-	"github.com/WithSoull/AuthService/internal/client/db"
-	"github.com/WithSoull/AuthService/internal/repository"
+	"github.com/WithSoull/UserServer/internal/client/db"
+	"github.com/WithSoull/UserServer/internal/repository"
 )
 
 type service struct {

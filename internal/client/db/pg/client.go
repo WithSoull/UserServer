@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/WithSoull/AuthService/internal/client/db"
+	"github.com/WithSoull/UserServer/internal/client/db"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 

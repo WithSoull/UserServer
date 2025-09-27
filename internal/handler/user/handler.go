@@ -1,8 +1,8 @@
 package user
 
 import (
-	"github.com/WithSoull/AuthService/internal/service"
-	desc "github.com/WithSoull/AuthService/pkg/user/v1"
+	"github.com/WithSoull/UserServer/internal/service"
+	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 )
 
 type handler struct {

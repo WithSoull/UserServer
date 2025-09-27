@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	desc "github.com/WithSoull/AuthService/pkg/user/v1"
+	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
 	"google.golang.org/protobuf/types/known/emptypb"
 )

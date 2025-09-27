@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	domainerrors "github.com/WithSoull/AuthService/internal/errors/domain_errors"
+	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 )
 
 func (s *service) Delete(ctx context.Context, id int64) error {
