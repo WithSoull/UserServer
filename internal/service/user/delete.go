@@ -7,7 +7,7 @@ import (
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 )
 
-func (s *service) Delete(ctx context.Context, id int64) error {
+func (s *userService) Delete(ctx context.Context, id int64) error {
 	err := s.repo.Delete(ctx, id)
 	if err != nil {
 		isLogNeeded, grpcErr := domainerrors.ToGRPCStatus(err)

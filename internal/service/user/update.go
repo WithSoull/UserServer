@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *service) Update(ctx context.Context, id int64, name, email *string) error {
+func (s *userService) Update(ctx context.Context, id int64, name, email *string) error {
 	if name != nil && *name == "" {
 		return status.Errorf(codes.InvalidArgument, "name is required")
 	}

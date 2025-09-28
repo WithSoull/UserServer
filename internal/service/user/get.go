@@ -8,7 +8,7 @@ import (
 	"github.com/WithSoull/UserServer/internal/model"
 )
 
-func (s *service) Get(ctx context.Context, id int64) (*model.User, error) {
+func (s *userService) Get(ctx context.Context, id int64) (*model.User, error) {
 	user, err := s.repo.Get(ctx, id)
 	if err != nil {
 		isLogNeeded, grpcErr := domainerrors.ToGRPCStatus(err)

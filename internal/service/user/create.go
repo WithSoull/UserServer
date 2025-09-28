@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *service) Create(ctx context.Context, userInfo model.UserInfo, password, passwordConfirm string) (int64, error) {
+func (s *userService) Create(ctx context.Context, userInfo model.UserInfo, password, passwordConfirm string) (int64, error) {
 	// Input validation
 	if userInfo.Name == "" {
 		return 0, status.Errorf(codes.InvalidArgument, "name is required")

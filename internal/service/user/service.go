@@ -3,9 +3,10 @@ package user
 import (
 	"github.com/WithSoull/UserServer/internal/client/db"
 	"github.com/WithSoull/UserServer/internal/repository"
+	"github.com/WithSoull/UserServer/internal/service"
 )
 
-type service struct {
+type userService struct {
 	repo     repository.UserRepository
 	txManger db.TxManager
 }
@@ -13,8 +14,8 @@ type service struct {
 func NewService(
 	repo repository.UserRepository,
 	txManger db.TxManager,
-) *service {
-	return &service{
+) service.UserService {
+	return &userService{
 		repo:     repo,
 		txManger: txManger,
 	}

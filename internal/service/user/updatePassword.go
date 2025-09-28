@@ -4,14 +4,14 @@ import (
 	"context"
 	"log"
 
-	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
+	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (s *service) UpdatePassword(ctx context.Context, id int64, password, passwordConfirm string) error {
+func (s *userService) UpdatePassword(ctx context.Context, id int64, password, passwordConfirm string) error {
 	hashedPassword, err := s.validateAndHashPassword(password, passwordConfirm)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func (s *service) UpdatePassword(ctx context.Context, id int64, password, passwo
 }
 
 // Validate password and hash it with grpc-code errorr
-func (s *service) validateAndHashPassword(password, passwordConfirm string) (string, error) {
+func (s *userService) validateAndHashPassword(password, passwordConfirm string) (string, error) {
 	if password != passwordConfirm {
 		return "", status.Error(codes.InvalidArgument, "passwords do not match")
 	}
