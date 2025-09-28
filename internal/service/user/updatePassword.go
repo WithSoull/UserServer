@@ -47,10 +47,16 @@ func (s *userService) validateAndHashPassword(password, passwordConfirm string) 
 	if len(password) < 5 {
 		return "", status.Error(codes.InvalidArgument, "password must be at least 5 characters long")
 	}
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+	return s.hashPassword(password)
+}
+
+func (s *userService) hashPassword(password string) (string, error) {
+	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		log.Printf("[Service Layer] failed to hash password: %v", err)
 		return "", err
 	}
-	return string(hashedPassword), nil
+
+	log.Printf("HASHPASSWORD | get: %s, return: %s", password, string(hashedBytes))
+	return string(hashedBytes), nil
 }

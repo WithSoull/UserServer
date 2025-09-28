@@ -6,11 +6,11 @@ import (
 	"github.com/WithSoull/UserServer/internal/model"
 )
 
-
 type UserService interface {
-	Create(ctx context.Context, info model.UserInfo, password, passwordConfirm string) (int64, error)
-	Get(ctx context.Context, id int64) (*model.User, error)
-	Update(ctx context.Context, id int64, name, email *string) error
-	UpdatePassword(ctx context.Context, id int64, password, confirm_password string) (error)
-	Delete(ctx context.Context, id int64) error
+	Create(context.Context, model.UserInfo, string, string) (int64, error)
+	Get(context.Context, int64) (*model.User, error)
+	Update(context.Context, int64, *string, *string) error
+	UpdatePassword(context.Context, int64, string, string) error
+	Delete(context.Context, int64) error
+	ValidateCredentials(context.Context, string, string) (bool, int64)
 }

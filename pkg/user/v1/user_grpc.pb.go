@@ -28,6 +28,7 @@ type UserV1Client interface {
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ValidateCredentials(ctx context.Context, in *ValidateCredentialsRequest, opts ...grpc.CallOption) (*ValidateCredentialsResponse, error)
 }
 
 type userV1Client struct {
@@ -83,6 +84,15 @@ func (c *userV1Client) Delete(ctx context.Context, in *DeleteRequest, opts ...gr
 	return out, nil
 }
 
+func (c *userV1Client) ValidateCredentials(ctx context.Context, in *ValidateCredentialsRequest, opts ...grpc.CallOption) (*ValidateCredentialsResponse, error) {
+	out := new(ValidateCredentialsResponse)
+	err := c.cc.Invoke(ctx, "/user_v1.UserV1/ValidateCredentials", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserV1Server is the server API for UserV1 service.
 // All implementations must embed UnimplementedUserV1Server
 // for forward compatibility
@@ -92,6 +102,7 @@ type UserV1Server interface {
 	Update(context.Context, *UpdateRequest) (*emptypb.Empty, error)
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*emptypb.Empty, error)
 	Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error)
+	ValidateCredentials(context.Context, *ValidateCredentialsRequest) (*ValidateCredentialsResponse, error)
 	mustEmbedUnimplementedUserV1Server()
 }
 
@@ -113,6 +124,9 @@ func (UnimplementedUserV1Server) UpdatePassword(context.Context, *UpdatePassword
 }
 func (UnimplementedUserV1Server) Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedUserV1Server) ValidateCredentials(context.Context, *ValidateCredentialsRequest) (*ValidateCredentialsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateCredentials not implemented")
 }
 func (UnimplementedUserV1Server) mustEmbedUnimplementedUserV1Server() {}
 
@@ -217,6 +231,24 @@ func _UserV1_Delete_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserV1_ValidateCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateCredentialsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserV1Server).ValidateCredentials(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user_v1.UserV1/ValidateCredentials",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserV1Server).ValidateCredentials(ctx, req.(*ValidateCredentialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserV1_ServiceDesc is the grpc.ServiceDesc for UserV1 service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -243,6 +275,10 @@ var UserV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _UserV1_Delete_Handler,
+		},
+		{
+			MethodName: "ValidateCredentials",
+			Handler:    _UserV1_ValidateCredentials_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

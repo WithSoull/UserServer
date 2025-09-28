@@ -18,6 +18,8 @@ func ToGRPCStatus(err error) (bool, error) {
 		return false, status.Error(codes.InvalidArgument, "invalid input")
 	case errors.Is(err, ErrPasswordMismatch):
 		return false, status.Error(codes.InvalidArgument, "passwords do not match")
+	case errors.Is(err, ErrInvalidCredentials):
+		return false, status.Error(codes.Unauthenticated, "ivalid credentials")
 	default:
 		return true, status.Error(codes.Internal, "unknown internal error")
 	}
