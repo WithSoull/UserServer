@@ -10,10 +10,14 @@ services:
       - "POSTGRES_PASSWORD=${PG_PASSWORD}"
     ports:
       - "${PG_PORT_OUTER}:${PG_PORT_INNER}"
+    networks:
+      - messenger-network
     volumes:
       - postgres_volume_user_server:/var/lib/postgresql/data
        
   migrator:
+    networks:
+      - messenger-network
     build:
       context: .
       dockerfile: migrator.Dockerfile
@@ -27,7 +31,13 @@ services:
     ports:
       - "${GRPC_PORT}:${GRPC_PORT}"
       - "${HTTP_PORT}:${HTTP_PORT}"
+    networks:
+      - messenger-network
     restart: unless-stopped
     depends_on:
       - pg-user
       - migrator
+
+networks:
+  messenger-network:
+    external: true
