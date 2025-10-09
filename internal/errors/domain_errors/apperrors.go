@@ -1,21 +1,32 @@
 package domainerrors
 
-import "errors"
+import (
+	"github.com/WithSoull/platform_common/pkg/sys"
+	"github.com/WithSoull/platform_common/pkg/sys/codes"
+)
 
 var (
-	ErrInternal     = errors.New("internal error")
-	ErrInvalidInput = errors.New("invalid input")
+	// Resource errors (NotFound)
+	ErrUserNotFound = sys.NewCommonError("user not found", codes.NotFound)
 
-	ErrUserNotFound       = errors.New("user not found")
-	ErrEmailAlreadyExists = errors.New("email already exists")
-	ErrPasswordMismatch   = errors.New("passwords do not match")
-	ErrPasswordTooShort   = errors.New("password too short")
+	// Conflict errors (AlreadyExists)
+	ErrEmailAlreadyExists = sys.NewCommonError("email already exists", codes.AlreadyExists)
 
-	ErrInvalidCredentials = errors.New("invalid credentials")
-	ErrTokenExpired       = errors.New("token expired")
-	ErrTokenInvalid       = errors.New("token invalid")
+	// Validation errors - General (InvalidArgument)
+	ErrInvalidInput = sys.NewCommonError("invalid input", codes.InvalidArgument)
 
-	ErrForbidden = errors.New("forbidden")
+	// Validation errors - Required fields (InvalidArgument)
+	ErrNameRequired     = sys.NewCommonError("name is required", codes.InvalidArgument)
+	ErrEmailRequired    = sys.NewCommonError("email is required", codes.InvalidArgument)
+	ErrPasswordRequired = sys.NewCommonError("password is required", codes.InvalidArgument)
 
-	ErrConflict = errors.New("conflict")
+	// Validation errors - Format (InvalidArgument)
+	ErrInvalidEmailFormat = sys.NewCommonError("invalid email format", codes.InvalidArgument)
+
+	// Validation errors - Password (InvalidArgument)
+	ErrPasswordMismatch = sys.NewCommonError("passwords do not match", codes.InvalidArgument)
+	ErrPasswordTooShort = sys.NewCommonError("password must be at least 5 characters long", codes.InvalidArgument)
+
+	// Internal errors
+	ErrInternal = sys.NewCommonError("internal error", codes.Internal)
 )

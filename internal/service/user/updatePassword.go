@@ -7,8 +7,6 @@ import (
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
 	"golang.org/x/crypto/bcrypt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (s *userService) UpdatePassword(ctx context.Context, id int64, password, passwordConfirm string) error {
@@ -27,25 +25,22 @@ func (s *userService) UpdatePassword(ctx context.Context, id int64, password, pa
 		}
 		return s.repo.LogPassword(ctx, id, ip)
 	})
-	if txErr != nil {
-		isLogNeeded, grpcErr := domainerrors.ToGRPCStatus(txErr)
-		if isLogNeeded {
-			log.Printf("[Service Layer] failed to update user password: %v", txErr)
-		}
-		return grpcErr
-	}
 
-	return nil
+	return txErr
 }
 
 // Validate password and hash it with grpc-code errorr
 func (s *userService) validateAndHashPassword(password, passwordConfirm string) (string, error) {
+	// Input Validation
+	if password == "" {
+		return "", domainerrors.ErrPasswordRequired
+	}
 	if password != passwordConfirm {
-		return "", status.Error(codes.InvalidArgument, "passwords do not match")
+		return "", domainerrors.ErrPasswordMismatch
 	}
 
 	if len(password) < 5 {
-		return "", status.Error(codes.InvalidArgument, "password must be at least 5 characters long")
+		return "", domainerrors.ErrPasswordTooShort
 	}
 
 	return s.hashPassword(password)
@@ -57,6 +52,5 @@ func (s *userService) hashPassword(password string) (string, error) {
 		return "", err
 	}
 
-	log.Printf("HASHPASSWORD | get: %s, return: %s", password, string(hashedBytes))
 	return string(hashedBytes), nil
 }
