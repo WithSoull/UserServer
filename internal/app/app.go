@@ -11,6 +11,8 @@ import (
 	"github.com/WithSoull/UserServer/internal/config"
 	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 	"github.com/WithSoull/platform_common/pkg/closer"
+	validationInterceptor "github.com/WithSoull/platform_common/pkg/middleware/validation"
+	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -111,7 +113,14 @@ func (a *App) initGRPCServer(ctx context.Context) error {
 		log.Fatalf("failed to load TLS keys: %v", err)
 	}
 
-	a.grpcServer = grpc.NewServer(grpc.Creds(creds))
+	a.grpcServer = grpc.NewServer(
+		grpc.Creds(creds),
+		grpc.UnaryInterceptor(
+			grpcMiddleware.ChainUnaryServer(
+				validationInterceptor.ErrorCodesInterceptor,
+			),
+		),
+	)
 
 	reflection.Register(a.grpcServer)
 

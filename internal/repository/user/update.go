@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -9,6 +10,7 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/WithSoull/UserServer/internal/client/db"
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
+	"github.com/jackc/pgconn"
 )
 
 func (r *repo) Update(ctx context.Context, id int64, name, email *string) error {
@@ -39,8 +41,13 @@ func (r *repo) Update(ctx context.Context, id int64, name, email *string) error 
 
 	result, err := r.db.DB().ExecContext(ctx, q, args...)
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return domainerrors.ErrEmailAlreadyExists
+		}
 		return err
 	}
+
 	rowsAffected := result.RowsAffected()
 	if rowsAffected == 0 {
 		return domainerrors.ErrUserNotFound

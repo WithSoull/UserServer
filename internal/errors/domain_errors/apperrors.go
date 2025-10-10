@@ -3,6 +3,7 @@ package domainerrors
 import (
 	"github.com/WithSoull/platform_common/pkg/sys"
 	"github.com/WithSoull/platform_common/pkg/sys/codes"
+	"github.com/WithSoull/platform_common/pkg/sys/validate"
 )
 
 var (
@@ -13,19 +14,20 @@ var (
 	ErrEmailAlreadyExists = sys.NewCommonError("email already exists", codes.AlreadyExists)
 
 	// Validation errors - General (InvalidArgument)
-	ErrInvalidInput = sys.NewCommonError("invalid input", codes.InvalidArgument)
+	ErrInvalidInput = validate.NewValidationErrors("invalid input")
 
 	// Validation errors - Required fields (InvalidArgument)
-	ErrNameRequired     = sys.NewCommonError("name is required", codes.InvalidArgument)
-	ErrEmailRequired    = sys.NewCommonError("email is required", codes.InvalidArgument)
-	ErrPasswordRequired = sys.NewCommonError("password is required", codes.InvalidArgument)
+	ErrNameRequired      = validate.NewValidationErrors("name is required")
+	ErrEmailRequired     = validate.NewValidationErrors("email is required")
+	ErrPasswordRequired  = validate.NewValidationErrors("password is required")
+	ErrNoChangesProvided = validate.NewValidationErrors("no changes provided")
 
 	// Validation errors - Format (InvalidArgument)
-	ErrInvalidEmailFormat = sys.NewCommonError("invalid email format", codes.InvalidArgument)
+	ErrInvalidEmailFormat = validate.NewValidationErrors("invalid email format")
 
 	// Validation errors - Password (InvalidArgument)
-	ErrPasswordMismatch = sys.NewCommonError("passwords do not match", codes.InvalidArgument)
-	ErrPasswordTooShort = sys.NewCommonError("password must be at least 5 characters long", codes.InvalidArgument)
+	ErrPasswordMismatch = validate.NewValidationErrors("passwords do not match")
+	ErrPasswordTooShort = validate.NewValidationErrors("password must be at least 5 characters long")
 
 	// Internal errors
 	ErrInternal = sys.NewCommonError("internal error", codes.Internal)

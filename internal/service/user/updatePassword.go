@@ -4,13 +4,14 @@ import (
 	"context"
 	"log"
 
-	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
+	"github.com/WithSoull/UserServer/internal/validator"
 	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *userService) UpdatePassword(ctx context.Context, id int64, password, passwordConfirm string) error {
-	hashedPassword, err := s.validateAndHashPassword(password, passwordConfirm)
+	// Input Validation + Hashing
+	hashedPassword, err := s.validateAndHashPassword(ctx, password, passwordConfirm)
 	if err != nil {
 		return err
 	}
@@ -29,18 +30,9 @@ func (s *userService) UpdatePassword(ctx context.Context, id int64, password, pa
 	return txErr
 }
 
-// Validate password and hash it with grpc-code errorr
-func (s *userService) validateAndHashPassword(password, passwordConfirm string) (string, error) {
-	// Input Validation
-	if password == "" {
-		return "", domainerrors.ErrPasswordRequired
-	}
-	if password != passwordConfirm {
-		return "", domainerrors.ErrPasswordMismatch
-	}
-
-	if len(password) < 5 {
-		return "", domainerrors.ErrPasswordTooShort
+func (s *userService) validateAndHashPassword(ctx context.Context, password, passwordConfirm string) (string, error) {
+	if err := validator.ValidatePassword(ctx, password, passwordConfirm); err != nil {
+		return "", err
 	}
 
 	return s.hashPassword(password)

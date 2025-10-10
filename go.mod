@@ -25,6 +25,7 @@ require (
 require (
 	github.com/WithSoull/platform_common v0.0.0-20251009211251-dda11b8fb05d // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
 	github.com/hexdigest/gounit v0.0.0-20180817093830-f1874d3307cb // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect

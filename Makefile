@@ -26,6 +26,7 @@ get-deps:
 	go get -u github.com/gojuno/minimock/v3
 	go get -u github.com/WithSoull/platform_common
 	go get -u github.com/grpc-ecosystem/grpc-gateway/v2/runtime
+	go get -u github.com/grpc-ecosystem/go-grpc-middleware
 
 
 generate-api:
