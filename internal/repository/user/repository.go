@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/WithSoull/UserServer/internal/client/db"
+	"github.com/WithSoull/platform_common/pkg/client/db"
 	"github.com/WithSoull/UserServer/internal/repository"
 )
 

@@ -11,6 +11,8 @@ github.com/WithSoull/platform_common v0.0.0-20251009175655-f932310df362 h1:Rok2q
 github.com/WithSoull/platform_common v0.0.0-20251009175655-f932310df362/go.mod h1:6HQpsS0HgjNi8lyUo2aclgqvO37N1iLwGNkS9vtdlAg=
 github.com/WithSoull/platform_common v0.0.0-20251009211251-dda11b8fb05d h1:T6za7DCegpvr8XfIvHG6Q1+GLtk4hwoX45PyP8j4b58=
 github.com/WithSoull/platform_common v0.0.0-20251009211251-dda11b8fb05d/go.mod h1:/mWUNEcBKnlcFVFBBJ6g8FLFIiN1P2FWWyDI4Ded8NA=
+github.com/WithSoull/platform_common v0.0.0-20251010163558-6466e3a44b62 h1:LAC3Zz7xFI0aqEbuINcdtctv2VoTiS2R6f83AJZ1NQ0=
+github.com/WithSoull/platform_common v0.0.0-20251010163558-6466e3a44b62/go.mod h1:lvjqf+FVzz+IRHetrd6FS7R4cHWgNFVXSdz1HBv9m/U=
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
 github.com/brianvoe/gofakeit v3.18.0+incompatible h1:wDOmHc9DLG4nRjUVVaxA+CEglKOW72Y5+4WNxUIkjM8=
 github.com/brianvoe/gofakeit v3.18.0+incompatible/go.mod h1:kfwdRA90vvNhPutZWfH7WPaDzUjz+CZFqG+rPkOjGOc=

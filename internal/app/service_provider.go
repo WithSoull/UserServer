@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/WithSoull/UserServer/internal/client/db"
-	"github.com/WithSoull/UserServer/internal/client/db/pg"
-	"github.com/WithSoull/UserServer/internal/client/db/transaction"
+	"github.com/WithSoull/platform_common/pkg/client/db"
+	"github.com/WithSoull/platform_common/pkg/client/db/pg"
+	"github.com/WithSoull/platform_common/pkg/client/db/transaction"
 	"github.com/WithSoull/UserServer/internal/config"
 	"github.com/WithSoull/UserServer/internal/config/env"
 	userHandler "github.com/WithSoull/UserServer/internal/handler/user"

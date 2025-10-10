@@ -4,16 +4,16 @@ import (
 	"context"
 	"testing"
 
-	txManagerMocks "github.com/WithSoull/UserServer/internal/client/db/mocks"
 	"github.com/WithSoull/UserServer/internal/model"
 	"github.com/WithSoull/UserServer/internal/repository"
-	userRepositoryMocks "github.com/WithSoull/UserServer/internal/repository/mocks"
 	userService "github.com/WithSoull/UserServer/internal/service/user"
+	"github.com/WithSoull/UserServer/pkg/mocks"
+	"github.com/WithSoull/platform_common/pkg/sys"
+	"github.com/WithSoull/platform_common/pkg/sys/codes"
+	"github.com/WithSoull/platform_common/pkg/sys/validate"
 	"github.com/brianvoe/gofakeit"
 	"github.com/gojuno/minimock/v3"
 	"github.com/stretchr/testify/require"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func TestCreate(t *testing.T) {
@@ -40,7 +40,7 @@ func TestCreate(t *testing.T) {
 			Email: email,
 		}
 		defaultUserRepositoryMockFunc = func(t *testing.T, mc *minimock.Controller) repository.UserRepository {
-			mock := userRepositoryMocks.NewUserRepositoryMock(mc)
+			mock := mocks.NewUserRepositoryMock(mc)
 			return mock
 		}
 	)
@@ -65,7 +65,7 @@ func TestCreate(t *testing.T) {
 			want_code: codes.OK,
 			err:       nil,
 			userRepoMock: func(t *testing.T, mc *minimock.Controller) repository.UserRepository {
-				mock := userRepositoryMocks.NewUserRepositoryMock(mc)
+				mock := mocks.NewUserRepositoryMock(mc)
 				mock.CreateMock.Inspect(func(ctx context.Context, user *model.UserInfo, hashedPassword string) {
 					require.NotEmpty(t, hashedPassword)
 				}).Return(id, nil)
@@ -166,7 +166,7 @@ func TestCreate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			userRepoMock := tt.userRepoMock(t, mc)
-			txManagerMock := txManagerMocks.NewTxManagerMock(mc)
+			txManagerMock := mocks.NewTxManagerMock(mc)
 
 			service := userService.NewService(userRepoMock, txManagerMock)
 
@@ -175,9 +175,12 @@ func TestCreate(t *testing.T) {
 				require.NoError(t, err)
 				require.Equal(t, res_id, id)
 			} else {
-				st, ok := status.FromError(err)
-				require.True(t, ok)
-				require.Equal(t, tt.want_code, st.Code())
+				if sys.IsCommonError(err) {
+					ce := sys.GetCommonError(err)
+					require.Equal(t, tt.want_code, ce.Code())
+				} else if validate.IsValidationError(err) {
+					require.Equal(t, tt.want_code, codes.InvalidArgument)
+				}
 			}
 		})
 	}

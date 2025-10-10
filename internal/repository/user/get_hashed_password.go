@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/WithSoull/UserServer/internal/client/db"
+	"github.com/WithSoull/platform_common/pkg/client/db"
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 	"github.com/jackc/pgx/v4"
 )

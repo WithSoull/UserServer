@@ -7,7 +7,7 @@ import (
 
 	userHandler "github.com/WithSoull/UserServer/internal/handler/user"
 	"github.com/WithSoull/UserServer/internal/service"
-	serviceMocks "github.com/WithSoull/UserServer/internal/service/mocks"
+	"github.com/WithSoull/UserServer/pkg/mocks"
 	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 	"github.com/brianvoe/gofakeit"
 	"github.com/gojuno/minimock/v3"
@@ -56,7 +56,7 @@ func TestUpdatePassword(t *testing.T) {
 			want: res,
 			err:  nil,
 			userServiceMock: func(mc *minimock.Controller) service.UserService {
-				mock := serviceMocks.NewUserServiceMock(mc)
+				mock := mocks.NewUserServiceMock(mc)
 				mock.UpdatePasswordMock.Expect(minimock.AnyContext, id, password, password).Return(nil)
 				return mock
 			},
@@ -69,7 +69,7 @@ func TestUpdatePassword(t *testing.T) {
 			want: &emptypb.Empty{},
 			err:  serviceErr,
 			userServiceMock: func(mc *minimock.Controller) service.UserService {
-				mock := serviceMocks.NewUserServiceMock(mc)
+				mock := mocks.NewUserServiceMock(mc)
 				mock.UpdatePasswordMock.Expect(minimock.AnyContext, id, password, password).Return(serviceErr)
 				return mock
 			},

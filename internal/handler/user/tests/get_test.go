@@ -9,7 +9,7 @@ import (
 	userHandler "github.com/WithSoull/UserServer/internal/handler/user"
 	"github.com/WithSoull/UserServer/internal/model"
 	"github.com/WithSoull/UserServer/internal/service"
-	serviceMocks "github.com/WithSoull/UserServer/internal/service/mocks"
+	"github.com/WithSoull/UserServer/pkg/mocks"
 	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 	"github.com/brianvoe/gofakeit"
 	"github.com/gojuno/minimock/v3"
@@ -81,7 +81,7 @@ func TestGet(t *testing.T) {
 			want: res,
 			err:  nil,
 			userServiceMock: func(mc *minimock.Controller) service.UserService {
-				mock := serviceMocks.NewUserServiceMock(mc)
+				mock := mocks.NewUserServiceMock(mc)
 				mock.GetMock.Expect(ctx, id).Return(user, nil)
 				return mock
 			},
@@ -95,7 +95,7 @@ func TestGet(t *testing.T) {
 			want: nil,
 			err:  serviceErr,
 			userServiceMock: func(mc *minimock.Controller) service.UserService {
-				mock := serviceMocks.NewUserServiceMock(mc)
+				mock := mocks.NewUserServiceMock(mc)
 				mock.GetMock.Expect(ctx, id).Return(nil, serviceErr)
 				return mock
 			},
