@@ -2,22 +2,30 @@ package app
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"log"
 	"net"
 	"net/http"
 	"sync"
+	"syscall"
+	"time"
 
 	"github.com/WithSoull/UserServer/internal/config"
 	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 	"github.com/WithSoull/platform_common/pkg/closer"
+	"github.com/WithSoull/platform_common/pkg/logger"
 	validationInterceptor "github.com/WithSoull/platform_common/pkg/middleware/validation"
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
+)
+
+const (
+	shutdownTimeout = 10 * time.Second
 )
 
 var configPath string
@@ -43,41 +51,11 @@ func NewApp(ctx context.Context) (*App, error) {
 	return a, nil
 }
 
-func (a *App) Run() error {
-	defer func() {
-		closer.CloseAll()
-		closer.Wait()
-	}()
-
-	wg := sync.WaitGroup{}
-	wg.Add(2)
-
-	go func() {
-		defer wg.Done()
-
-		err := a.runGRPCServer()
-		if err != nil {
-			log.Fatalf("failed to run grpc server: %v", err)
-		}
-	}()
-
-	go func() {
-		defer wg.Done()
-
-		err := a.runHTTPServer()
-		if err != nil {
-			log.Fatalf("failed to run http server: %v", err)
-		}
-	}()
-
-	wg.Wait()
-
-	return nil
-}
-
 func (a *App) initDeps(ctx context.Context) error {
 	inits := []func(context.Context) error{
 		a.initConfig,
+		a.initLogger,
+		a.initCloser,
 		a.initServiceProvider,
 		a.initGRPCServer,
 		a.initHTTPServer,
@@ -102,6 +80,15 @@ func (a *App) initConfig(_ context.Context) error {
 	return nil
 }
 
+func (a *App) initLogger(_ context.Context) error {
+	return logger.Init(config.AppConfig().Logger.LogLevel(), config.AppConfig().Logger.AsJSON())
+}
+
+func (a *App) initCloser(_ context.Context) error {
+	closer.Configure(logger.Logger(), shutdownTimeout, syscall.SIGINT, syscall.SIGTERM)
+	return nil
+}
+
 func (a *App) initServiceProvider(_ context.Context) error {
 	a.serviceProvider = newServiceProvider()
 	return nil
@@ -122,6 +109,11 @@ func (a *App) initGRPCServer(ctx context.Context) error {
 		),
 	)
 
+	closer.AddNamed("GRPC server", func(ctx context.Context) error {
+		a.grpcServer.GracefulStop()
+		return nil
+	})
+
 	reflection.Register(a.grpcServer)
 
 	desc.RegisterUserV1Server(a.grpcServer, a.serviceProvider.UserHandler(ctx))
@@ -129,47 +121,84 @@ func (a *App) initGRPCServer(ctx context.Context) error {
 	return nil
 }
 
-func (a *App) runGRPCServer() error {
-	log.Printf("GRPC server is running on %s", a.serviceProvider.GRPCConfig().Address())
+func (a *App) initHTTPServer(ctx context.Context) error {
+	mux := runtime.NewServeMux()
+	creds, err := credentials.NewServerTLSFromFile("service.pem", "service.key")
+	if err != nil {
+		log.Fatalf("failed to load TLS keys: %v", err)
+	}
 
-	lis, err := net.Listen("tcp", a.serviceProvider.GRPCConfig().Address())
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(creds),
+	}
+
+	err = desc.RegisterUserV1HandlerFromEndpoint(ctx, mux, config.AppConfig().GRPC.Address(), opts)
 	if err != nil {
 		return err
 	}
+
+	a.httpServer = &http.Server{
+		Addr:    config.AppConfig().HTTP.Address(),
+		Handler: mux,
+	}
+
+	closer.AddNamed("HTTP server", func(ctx context.Context) error {
+		return a.httpServer.Shutdown(ctx)
+	})
+
+	return nil
+}
+
+func (a *App) runGRPCServer() error {
+	lis, err := net.Listen("tcp", config.AppConfig().GRPC.Address())
+	if err != nil {
+		return err
+	}
+
+	logger.Info(context.Background(), "GRPC server listening", zap.String("address", config.AppConfig().GRPC.Address()))
 
 	err = a.grpcServer.Serve(lis)
 	if err != nil {
 		return err
 	}
 
-	return nil
-}
-
-func (a *App) initHTTPServer(ctx context.Context) error {
-	mux := runtime.NewServeMux()
-
-	opts := []grpc.DialOption{
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	}
-
-	err := desc.RegisterUserV1HandlerFromEndpoint(ctx, mux, a.serviceProvider.GRPCConfig().Address(), opts)
-	if err != nil {
-		return err
-	}
-
-	a.httpServer = &http.Server{
-		Addr:    a.serviceProvider.HTTPConfig().Address(),
-		Handler: mux,
-	}
-
+	logger.Info(context.Background(), "GRPC server stopped gracefully")
 	return nil
 }
 
 func (a *App) runHTTPServer() error {
-	log.Printf("HTTP server is running on %s", a.serviceProvider.HTTPConfig().Address())
+	logger.Info(context.Background(), "HTTP server is starting listening and serving", zap.String("address", config.AppConfig().HTTP.Address()))
 	err := a.httpServer.ListenAndServe()
 	if err != nil {
 		return err
 	}
+	logger.Info(context.Background(), "HTTP server stopped gracefully")
+	return nil
+}
+
+func (a *App) Run() error {
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+
+		err := a.runGRPCServer()
+		if err != nil {
+			logger.Error(context.Background(), "fault grpc server", zap.Error(err))
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+
+		err := a.runHTTPServer()
+		if err != nil && !errors.Is(err, http.ErrServerClosed) {
+			logger.Error(context.Background(), "fault http server", zap.Error(err))
+		}
+	}()
+
+	wg.Wait()
+
 	return nil
 }

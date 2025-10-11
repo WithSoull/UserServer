@@ -24,9 +24,11 @@ get-deps:
 	go get -u google.golang.org/grpc
 	go get -u golang.org/x/crypto
 	go get -u github.com/gojuno/minimock/v3
+
 	go get -u github.com/WithSoull/platform_common
 	go get -u github.com/grpc-ecosystem/grpc-gateway/v2/runtime
 	go get -u github.com/grpc-ecosystem/go-grpc-middleware
+	go get -u github.com/caarlos0/env/v11
 
 
 generate-api:

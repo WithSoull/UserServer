@@ -2,27 +2,21 @@ package app
 
 import (
 	"context"
-	"log"
 
-	"github.com/WithSoull/platform_common/pkg/client/db"
-	"github.com/WithSoull/platform_common/pkg/client/db/pg"
-	"github.com/WithSoull/platform_common/pkg/client/db/transaction"
 	"github.com/WithSoull/UserServer/internal/config"
-	"github.com/WithSoull/UserServer/internal/config/env"
 	userHandler "github.com/WithSoull/UserServer/internal/handler/user"
 	"github.com/WithSoull/UserServer/internal/repository"
 	userRepository "github.com/WithSoull/UserServer/internal/repository/user"
 	"github.com/WithSoull/UserServer/internal/service"
 	userService "github.com/WithSoull/UserServer/internal/service/user"
 	desc "github.com/WithSoull/UserServer/pkg/user/v1"
+	"github.com/WithSoull/platform_common/pkg/client/db"
+	"github.com/WithSoull/platform_common/pkg/client/db/pg"
+	"github.com/WithSoull/platform_common/pkg/client/db/transaction"
 	"github.com/WithSoull/platform_common/pkg/closer"
 )
 
 type serviceProvider struct {
-	pgConfig   config.PGConfig
-	grpcConfig config.GRPCConfig
-	httpConfig config.HTTPConfig
-
 	pgClient  db.Client
 	txManager db.TxManager
 
@@ -35,59 +29,19 @@ func newServiceProvider() *serviceProvider {
 	return &serviceProvider{}
 }
 
-func (s *serviceProvider) PGConfig() config.PGConfig {
-	if s.pgConfig == nil {
-		cfg, err := env.NewPGConfig()
-		if err != nil {
-			log.Fatalf("failed to get pg config: %s", err.Error())
-		}
-
-		s.pgConfig = cfg
-	}
-
-	return s.pgConfig
-}
-
-func (s *serviceProvider) GRPCConfig() config.GRPCConfig {
-	if s.grpcConfig == nil {
-		cfg, err := env.NewGRPCConfig()
-		if err != nil {
-			log.Fatalf("failed to get grpc config: %s", err.Error())
-		}
-
-		s.grpcConfig = cfg
-	}
-
-	return s.grpcConfig
-}
-
-func (s *serviceProvider) HTTPConfig() config.HTTPConfig {
-	if s.httpConfig == nil {
-		cfg, err := env.NewHTTPConfig()
-		if err != nil {
-			log.Fatalf("failed to get http config: %s", err.Error())
-		}
-
-		s.httpConfig = cfg
-	}
-
-	return s.httpConfig
-}
-
 func (s *serviceProvider) PGClient(ctx context.Context) db.Client {
 	if s.pgClient == nil {
-		client, err := pg.NewPGClient(ctx, s.PGConfig().DSN())
+		client, err := pg.NewPGClient(ctx, config.AppConfig().PG.DSN())
 		if err != nil {
-			log.Fatalf("failed to create connection pool: %s", err.Error())
+			panic(err)
 		}
 
 		if err := client.DB().Ping(ctx); err != nil {
-			log.Fatalf("failed to connect to database: %v", err.Error())
+			panic(err)
 		}
 
-		closer.Add(func() error {
-			client.Close()
-			return nil
+		closer.AddNamed("PGClient", func(ctx context.Context) error {
+			return client.Close()
 		})
 
 		s.pgClient = client
