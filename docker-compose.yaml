@@ -14,6 +14,12 @@ services:
       - messenger-network
     volumes:
       - postgres_volume_user_server:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER} -d ${PG_DATABASE_NAME} -h 127.0.0.1 || exit 1"]
+      interval: 2s
+      timeout: 1s
+      retries: 15
+      start_period: 5s
        
   migrator:
     networks:
@@ -25,6 +31,9 @@ services:
     restart: on-failure
     environment:
         DB_HOST: pg-user
+    depends_on:
+      pg-user:
+        condition: service_healthy
 
   user-server:
     build: .
@@ -35,8 +44,10 @@ services:
       - messenger-network
     restart: unless-stopped
     depends_on:
-      - pg-user
-      - migrator
+      pg-user:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
 
 networks:
   messenger-network:
