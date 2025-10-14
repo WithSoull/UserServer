@@ -2,10 +2,11 @@ package user
 
 import (
 	"context"
-	"log"
 
 	"github.com/WithSoull/UserServer/internal/validator"
+	"github.com/WithSoull/platform_common/pkg/contextx/claimsctx"
 	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
+	"github.com/WithSoull/platform_common/pkg/logger"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -22,7 +23,7 @@ func (s *userService) UpdatePassword(ctx context.Context, id int64, password, pa
 		}
 		ip, ok := ipctx.ExtractIP(ctx)
 		if !ok {
-			log.Printf("[Service Layer] failed to extract IP from context for user (id=%d)", id)
+			logger.Error(claimsctx.InjectUserID(ctx, id), "Failed to extract IP from context to user")
 		}
 		return s.repo.LogPassword(ctx, id, ip)
 	})

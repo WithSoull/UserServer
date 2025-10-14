@@ -5,6 +5,10 @@ github.com/Masterminds/squirrel v1.5.4 h1:uUcX/aBc8O7Fg9kaISIUsHXdKuqehiXAMQTYX8
 github.com/Masterminds/squirrel v1.5.4/go.mod h1:NNaOrjSoIDfDA40n7sr2tPNZRfjzjA400rg+riTZj10=
 github.com/WithSoull/platform_common v0.0.0-20251011124932-58ae027709d5 h1:3s1GLF0Wh2Ge8oOUYoiHKifVWW87fH9r7x439/ie82Q=
 github.com/WithSoull/platform_common v0.0.0-20251011124932-58ae027709d5/go.mod h1:e2wngqCcH6upexYELub1r3F+qD6fuWtFY8gXifSQ+fc=
+github.com/WithSoull/platform_common v0.0.0-20251011233538-ba2443fd8699 h1:LCsiHv6/mUCgpbblrqE3Rdhv/VThZuBoeO4Cpgqr4XA=
+github.com/WithSoull/platform_common v0.0.0-20251011233538-ba2443fd8699/go.mod h1:e2wngqCcH6upexYELub1r3F+qD6fuWtFY8gXifSQ+fc=
+github.com/WithSoull/platform_common v1.0.0 h1:I+hpiJUAVFYzQfzQ+23ZpCO4ltaSfV5k3bJ3Xg0RzqY=
+github.com/WithSoull/platform_common v1.0.0/go.mod h1:e2wngqCcH6upexYELub1r3F+qD6fuWtFY8gXifSQ+fc=
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
 github.com/brianvoe/gofakeit v3.18.0+incompatible h1:wDOmHc9DLG4nRjUVVaxA+CEglKOW72Y5+4WNxUIkjM8=
 github.com/brianvoe/gofakeit v3.18.0+incompatible/go.mod h1:kfwdRA90vvNhPutZWfH7WPaDzUjz+CZFqG+rPkOjGOc=

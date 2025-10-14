@@ -14,6 +14,7 @@ import (
 	"github.com/WithSoull/platform_common/pkg/client/db/pg"
 	"github.com/WithSoull/platform_common/pkg/client/db/transaction"
 	"github.com/WithSoull/platform_common/pkg/closer"
+	"github.com/WithSoull/platform_common/pkg/logger"
 )
 
 type serviceProvider struct {
@@ -31,7 +32,7 @@ func newServiceProvider() *serviceProvider {
 
 func (s *serviceProvider) PGClient(ctx context.Context) db.Client {
 	if s.pgClient == nil {
-		client, err := pg.NewPGClient(ctx, config.AppConfig().PG.DSN())
+		client, err := pg.NewPGClient(ctx, config.AppConfig().PG.DSN(), logger.Logger())
 		if err != nil {
 			panic(err)
 		}

@@ -4,7 +4,7 @@ go 1.24.1
 
 require (
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/WithSoull/platform_common v0.0.0-20251011124932-58ae027709d5
+	github.com/WithSoull/platform_common v1.0.0
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/gojuno/minimock/v3 v3.4.7
