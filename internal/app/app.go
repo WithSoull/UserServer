@@ -83,7 +83,7 @@ func (a *App) initConfig(_ context.Context) error {
 }
 
 func (a *App) initLogger(_ context.Context) error {
-	return logger.Init(config.AppConfig().Logger.LogLevel(), config.AppConfig().Logger.AsJSON())
+	return logger.Init(config.AppConfig().Logger)
 }
 
 func (a *App) initCloser(_ context.Context) error {
