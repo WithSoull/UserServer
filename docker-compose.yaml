@@ -11,7 +11,7 @@ services:
     ports:
       - "${PG_PORT_OUTER}:${PG_PORT_INNER}"
     networks:
-      - messenger-network
+      - messanger-network
     volumes:
       - postgres_volume_user_server:/var/lib/postgresql/data
     healthcheck:
@@ -23,7 +23,7 @@ services:
        
   migrator:
     networks:
-      - messenger-network
+      - messanger-network
     build:
       context: .
       dockerfile: migrator.Dockerfile
@@ -41,7 +41,7 @@ services:
       - "${GRPC_PORT}:${GRPC_PORT}"
       - "${HTTP_PORT}:${HTTP_PORT}"
     networks:
-      - messenger-network
+      - messanger-network
     restart: unless-stopped
     depends_on:
       pg-user:
@@ -50,5 +50,5 @@ services:
         condition: service_completed_successfully
 
 networks:
-  messenger-network:
+  messanger-network:
     external: true
