@@ -3,21 +3,22 @@ package user
 import (
 	"context"
 	"errors"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/WithSoull/platform_common/pkg/client/db"
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 	model "github.com/WithSoull/UserServer/internal/model"
 	"github.com/WithSoull/UserServer/internal/repository/user/conventer"
+	"github.com/WithSoull/platform_common/pkg/client/db"
 	"github.com/jackc/pgconn"
 )
 
-func (r *repo) Create(ctx context.Context, userInfo *model.UserInfo, hashedPassword string) (int64, error) {
+func (r *repo) Create(ctx context.Context, userInfo *model.UserInfo, hashedPassword string, createdAt time.Time) (int64, error) {
 	userInfoRepo := conventer.FromModelToRepoUserInfo(userInfo)
 	builder := sq.Insert(usersTableName).
 		PlaceholderFormat(sq.Dollar).
-		Columns(nameColumn, emailColumn, passwordColumn).
-		Values(userInfoRepo.Name, userInfoRepo.Email, hashedPassword).
+		Columns(nameColumn, emailColumn, passwordColumn, createdAtColumn).
+		Values(userInfoRepo.Name, userInfoRepo.Email, hashedPassword, createdAt).
 		Suffix("RETURNING id")
 
 	query, args, err := builder.ToSql()

@@ -14,3 +14,8 @@ type UserService interface {
 	Delete(context.Context, int64) error
 	ValidateCredentials(context.Context, string, string) (bool, int64)
 }
+
+type UserProducerService interface {
+	ProduceUserCreated(ctx context.Context, event model.UserCreatedEvent) error
+	ProduceUserDeleted(ctx context.Context, event model.UserDeletedEvent) error
+}

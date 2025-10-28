@@ -5,8 +5,8 @@ import (
 
 	"github.com/Masterminds/squirrel"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/WithSoull/platform_common/pkg/client/db"
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
+	"github.com/WithSoull/platform_common/pkg/client/db"
 )
 
 func (r *repo) Delete(ctx context.Context, id int64) error {

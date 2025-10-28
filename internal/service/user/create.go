@@ -2,11 +2,14 @@ package user
 
 import (
 	"context"
+	"time"
 
 	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 	"github.com/WithSoull/UserServer/internal/model"
 	"github.com/WithSoull/UserServer/internal/validator"
+	"github.com/WithSoull/platform_common/pkg/logger"
 	"github.com/WithSoull/platform_common/pkg/sys/validate"
+	"go.uber.org/zap"
 )
 
 func (s *userService) Create(ctx context.Context, userInfo model.UserInfo, password, passwordConfirm string) (int64, error) {
@@ -26,9 +29,17 @@ func (s *userService) Create(ctx context.Context, userInfo model.UserInfo, passw
 		return 0, err
 	}
 
-	id, err := s.repo.Create(ctx, &userInfo, hashedPassword)
+	createdAt := time.Now()
+	id, err := s.repo.Create(ctx, &userInfo, hashedPassword, createdAt)
 	if err != nil {
 		return 0, err
+	}
+
+	if err := s.userProducerService.ProduceUserCreated(ctx, model.UserCreatedEvent{
+		UserID:    id,
+		CreatedAt: &createdAt,
+	}); err != nil {
+		logger.Error(ctx, "failed to producer user.created", zap.Int64("userID", id), zap.Error(err))
 	}
 
 	return id, nil

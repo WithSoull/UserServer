@@ -18,6 +18,7 @@ install-deps:
 
 get-deps:
 	go get -u google.golang.org/protobuf/cmd/protoc-gen-go
+	go get -u google.golang.org/protobuf/proto
 	go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 	go get -u github.com/jackc/pgx/v4
 	go get -u github.com/jackc/pgconn

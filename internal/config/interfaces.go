@@ -1,6 +1,10 @@
 package config
 
-import "time"
+import (
+	"time"
+
+	"github.com/IBM/sarama"
+)
 
 type GRPCConfig interface {
 	Address() string
@@ -43,4 +47,20 @@ type MetricsConfig interface {
 type RateLimiterConfig interface {
 	Limit() int64
 	Period() time.Duration
+}
+
+type SaramaConfig interface {
+	Config() *sarama.Config
+}
+
+type KafkaConfig interface {
+	Brokers() []string
+}
+
+type UserCreatedProducerConfig interface {
+	Topic() string
+}
+
+type UserDeletedProducerConfig interface {
+	Topic() string
 }

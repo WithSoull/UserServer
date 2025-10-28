@@ -2,12 +2,13 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/WithSoull/UserServer/internal/model"
 )
 
 type UserRepository interface {
-	Create(context.Context, *model.UserInfo, string) (int64, error)
+	Create(context.Context, *model.UserInfo, string, time.Time) (int64, error)
 	Get(context.Context, int64) (*model.User, error)
 	Update(context.Context, int64, *string, *string) error
 	UpdatePassword(context.Context, int64, string) error
