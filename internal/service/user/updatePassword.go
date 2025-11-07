@@ -11,6 +11,11 @@ import (
 )
 
 func (s *userService) UpdatePassword(ctx context.Context, id int64, password, passwordConfirm string) error {
+	// Access validation
+	if err := s.checkUserPermission(ctx, id); err != nil {
+		return err
+	}
+
 	// Input Validation + Hashing
 	hashedPassword, err := s.validateAndHashPassword(ctx, password, passwordConfirm)
 	if err != nil {

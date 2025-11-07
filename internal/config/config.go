@@ -19,6 +19,7 @@ type config struct {
 	Tracing     TracingConfig
 	Metrics     MetricsConfig
 	RateLimiter RateLimiterConfig
+	JWT         JWTConfig
 
 	Kafka               KafkaConfig
 	Sarama              SaramaConfig
@@ -70,6 +71,11 @@ func Load(path ...string) error {
 		return err
 	}
 
+	jwtCfg, err := env.NewJWTConfig()
+	if err != nil {
+		return err
+	}
+
 	kafkaCfg, err := env.NewKafkaConfig()
 	if err != nil {
 		return err
@@ -98,6 +104,7 @@ func Load(path ...string) error {
 		Tracing:     tracingCfg,
 		Metrics:     metricsCfg,
 		RateLimiter: rateLimiterCfg,
+		JWT:         jwtCfg,
 
 		Kafka:               kafkaCfg,
 		Sarama:              saramaCfg,

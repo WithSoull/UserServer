@@ -7,7 +7,12 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *handler) Update(ctx context.Context, req *desc.UpdateRequest) (*emptypb.Empty, error) {
+func (h *handler) Update(ctx context.Context, req *desc.UpdateRequest) (*emptypb.Empty, error) {
+	ctx, err := h.verifyToken(ctx)
+	if err != nil {
+		return &emptypb.Empty{}, err
+	}
+
 	var name *string
 	if req.GetName() != nil {
 		name = &req.GetName().Value
@@ -18,5 +23,5 @@ func (s *handler) Update(ctx context.Context, req *desc.UpdateRequest) (*emptypb
 		email = &req.GetEmail().Value
 	}
 
-	return &emptypb.Empty{}, s.service.Update(ctx, req.GetId(), name, email)
+	return &emptypb.Empty{}, h.service.Update(ctx, req.GetId(), name, email)
 }

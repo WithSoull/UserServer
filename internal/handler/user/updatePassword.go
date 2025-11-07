@@ -8,7 +8,12 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *handler) UpdatePassword(ctx context.Context, req *desc.UpdatePasswordRequest) (*emptypb.Empty, error) {
+func (h *handler) UpdatePassword(ctx context.Context, req *desc.UpdatePasswordRequest) (*emptypb.Empty, error) {
+	ctx, err := h.verifyToken(ctx)
+	if err != nil {
+		return &emptypb.Empty{}, err
+	}
+
 	ctx = ipctx.InjectIp(ctx)
-	return &emptypb.Empty{}, s.service.UpdatePassword(ctx, req.GetId(), req.GetPassword(), req.GetPasswordConfirm())
+	return &emptypb.Empty{}, h.service.UpdatePassword(ctx, req.GetId(), req.GetPassword(), req.GetPasswordConfirm())
 }

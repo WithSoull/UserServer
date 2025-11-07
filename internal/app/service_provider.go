@@ -21,6 +21,8 @@ import (
 	"github.com/WithSoull/platform_common/pkg/kafka"
 	kafkaProducer "github.com/WithSoull/platform_common/pkg/kafka/producer"
 	"github.com/WithSoull/platform_common/pkg/logger"
+	"github.com/WithSoull/platform_common/pkg/tokens"
+	"github.com/WithSoull/platform_common/pkg/tokens/jwt"
 	"go.uber.org/zap"
 )
 
@@ -32,6 +34,7 @@ type serviceProvider struct {
 
 	userService         service.UserService
 	userProducerService service.UserProducerService
+	tokenVerifier       tokens.TokenVerifier
 
 	userHandler desc.UserV1Server
 
@@ -89,9 +92,16 @@ func (s *serviceProvider) UserService(ctx context.Context) service.UserService {
 	return s.userService
 }
 
+func (s *serviceProvider) TokenVerifier(ctx context.Context) tokens.TokenVerifier {
+	if s.tokenVerifier == nil {
+		s.tokenVerifier = jwt.NewJWTVerifier(config.AppConfig().JWT)
+	}
+	return s.tokenVerifier
+}
+
 func (s *serviceProvider) UserHandler(ctx context.Context) desc.UserV1Server {
 	if s.userHandler == nil {
-		s.userHandler = userHandler.NewHandler(s.UserService(ctx))
+		s.userHandler = userHandler.NewHandler(s.UserService(ctx), s.TokenVerifier(ctx))
 	}
 
 	return s.userHandler

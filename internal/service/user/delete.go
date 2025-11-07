@@ -10,6 +10,10 @@ import (
 )
 
 func (s *userService) Delete(ctx context.Context, id int64) error {
+	if err := s.checkUserPermission(ctx, id); err != nil {
+		return err
+	}
+
 	err := s.repo.Delete(ctx, id)
 	if err != nil {
 		return err

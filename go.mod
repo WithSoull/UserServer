@@ -5,7 +5,7 @@ go 1.24.1
 require (
 	github.com/IBM/sarama v1.46.2
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/WithSoull/platform_common v1.5.4
+	github.com/WithSoull/platform_common v1.6.6
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/gojuno/minimock/v3 v3.4.7
@@ -38,6 +38,7 @@ require (
 	github.com/georgysavva/scany v1.2.3 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
+	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect

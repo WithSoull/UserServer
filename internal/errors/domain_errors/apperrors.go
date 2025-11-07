@@ -10,6 +10,12 @@ var (
 	// Resource errors (NotFound)
 	ErrUserNotFound = sys.NewCommonError("user not found", codes.NotFound)
 
+	// Verify errors
+	ErrFailedToVerify = sys.NewCommonError("failed to verify user", codes.Unauthenticated)
+
+	// Permission errors
+	ErrNoPermission = sys.NewCommonError("user have no permission to to this action", codes.PermissionDenied)
+
 	// Conflict errors (AlreadyExists)
 	ErrEmailAlreadyExists = sys.NewCommonError("email already exists", codes.AlreadyExists)
 

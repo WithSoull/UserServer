@@ -42,3 +42,14 @@ func (s *userService) ValidateCredentials(ctx context.Context, email, password s
 
 	return true, id
 }
+
+func (s *userService) checkUserPermission(ctx context.Context, expectedID int64) error {
+	senderID, ok := claimsctx.ExtractUserID(ctx)
+	if !ok {
+		return domainerrors.ErrFailedToVerify
+	}
+	if senderID != expectedID {
+		return domainerrors.ErrNoPermission
+	}
+	return nil
+}

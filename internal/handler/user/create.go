@@ -7,8 +7,8 @@ import (
 	desc "github.com/WithSoull/UserServer/pkg/user/v1"
 )
 
-func (s *handler) Create(ctx context.Context, req *desc.CreateRequest) (*desc.CreateResponse, error) {
-	userID, err := s.service.Create(ctx, conventer.FromProtoToModelUserInfo(req.GetUserInfo()), req.GetPassword(), req.GetPasswordConfirm())
+func (h *handler) Create(ctx context.Context, req *desc.CreateRequest) (*desc.CreateResponse, error) {
+	userID, err := h.service.Create(ctx, conventer.FromProtoToModelUserInfo(req.GetUserInfo()), req.GetPassword(), req.GetPasswordConfirm())
 	if err != nil {
 		return nil, err
 	}

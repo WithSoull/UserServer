@@ -20,6 +20,11 @@ type PGConfig interface {
 	NeedLog() bool
 }
 
+type JWTConfig interface {
+	RefreshTokenSecretKey() string
+	AccessTokenSecretKey() string
+}
+
 type LoggerConfig interface {
 	LogLevel() string
 	AsJSON() bool

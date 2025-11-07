@@ -9,6 +9,11 @@ import (
 )
 
 func (s *userService) Update(ctx context.Context, id int64, name, email *string) error {
+	// Access validation
+	if err := s.checkUserPermission(ctx, id); err != nil {
+		return err
+	}
+
 	// Input validation
 	if err := validate.Validate(
 		ctx,

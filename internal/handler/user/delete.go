@@ -7,6 +7,11 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *handler) Delete(ctx context.Context, req *desc.DeleteRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, s.service.Delete(ctx, req.GetId())
+func (h *handler) Delete(ctx context.Context, req *desc.DeleteRequest) (*emptypb.Empty, error) {
+	ctx, err := h.verifyToken(ctx)
+	if err != nil {
+		return &emptypb.Empty{}, err
+	}
+
+	return &emptypb.Empty{}, h.service.Delete(ctx, req.GetId())
 }
