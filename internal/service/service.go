@@ -9,9 +9,9 @@ import (
 type UserService interface {
 	Create(context.Context, model.UserInfo, string, string) (int64, error)
 	Get(context.Context, int64) (*model.User, error)
-	Update(context.Context, int64, *string, *string) error
-	UpdatePassword(context.Context, int64, string, string) error
-	Delete(context.Context, int64) error
+	Update(context.Context, *string, *string) error
+	UpdatePassword(context.Context, string, string) error
+	Delete(context.Context) error
 	ValidateCredentials(context.Context, string, string) (bool, int64)
 }
 

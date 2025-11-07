@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 
+	domainerrors "github.com/WithSoull/UserServer/internal/errors/domain_errors"
 	"github.com/WithSoull/UserServer/internal/validator"
 	"github.com/WithSoull/platform_common/pkg/contextx/claimsctx"
 	"github.com/WithSoull/platform_common/pkg/contextx/ipctx"
@@ -10,10 +11,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *userService) UpdatePassword(ctx context.Context, id int64, password, passwordConfirm string) error {
-	// Access validation
-	if err := s.checkUserPermission(ctx, id); err != nil {
-		return err
+func (s *userService) UpdatePassword(ctx context.Context, password, passwordConfirm string) error {
+	senderID, ok := claimsctx.ExtractUserID(ctx)
+	if !ok {
+		return domainerrors.ErrFailedToVerify
 	}
 
 	// Input Validation + Hashing
@@ -23,14 +24,14 @@ func (s *userService) UpdatePassword(ctx context.Context, id int64, password, pa
 	}
 
 	txErr := s.txManger.ReadCommitted(ctx, func(ctx context.Context) error {
-		if err := s.repo.UpdatePassword(ctx, id, hashedPassword); err != nil {
+		if err := s.repo.UpdatePassword(ctx, senderID, hashedPassword); err != nil {
 			return err
 		}
 		ip, ok := ipctx.ExtractIP(ctx)
 		if !ok {
-			logger.Error(claimsctx.InjectUserID(ctx, id), "Failed to extract IP from context to user")
+			logger.Error(claimsctx.InjectUserID(ctx, senderID), "Failed to extract IP from context to user")
 		}
-		return s.repo.LogPassword(ctx, id, ip)
+		return s.repo.LogPassword(ctx, senderID, ip)
 	})
 
 	return txErr

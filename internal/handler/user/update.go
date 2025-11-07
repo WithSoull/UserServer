@@ -23,5 +23,5 @@ func (h *handler) Update(ctx context.Context, req *desc.UpdateRequest) (*emptypb
 		email = &req.GetEmail().Value
 	}
 
-	return &emptypb.Empty{}, h.service.Update(ctx, req.GetId(), name, email)
+	return &emptypb.Empty{}, h.service.Update(ctx, name, email)
 }

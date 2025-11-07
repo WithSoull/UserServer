@@ -27,7 +27,7 @@ type UserV1Client interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Delete(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ValidateCredentials(ctx context.Context, in *ValidateCredentialsRequest, opts ...grpc.CallOption) (*ValidateCredentialsResponse, error)
 }
 
@@ -75,7 +75,7 @@ func (c *userV1Client) UpdatePassword(ctx context.Context, in *UpdatePasswordReq
 	return out, nil
 }
 
-func (c *userV1Client) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userV1Client) Delete(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/user_v1.UserV1/Delete", in, out, opts...)
 	if err != nil {
@@ -101,7 +101,7 @@ type UserV1Server interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	Update(context.Context, *UpdateRequest) (*emptypb.Empty, error)
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*emptypb.Empty, error)
-	Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error)
+	Delete(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	ValidateCredentials(context.Context, *ValidateCredentialsRequest) (*ValidateCredentialsResponse, error)
 	mustEmbedUnimplementedUserV1Server()
 }
@@ -122,7 +122,7 @@ func (UnimplementedUserV1Server) Update(context.Context, *UpdateRequest) (*empty
 func (UnimplementedUserV1Server) UpdatePassword(context.Context, *UpdatePasswordRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePassword not implemented")
 }
-func (UnimplementedUserV1Server) Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserV1Server) Delete(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedUserV1Server) ValidateCredentials(context.Context, *ValidateCredentialsRequest) (*ValidateCredentialsResponse, error) {
@@ -214,7 +214,7 @@ func _UserV1_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _UserV1_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -226,7 +226,7 @@ func _UserV1_Delete_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: "/user_v1.UserV1/Delete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserV1Server).Delete(ctx, req.(*DeleteRequest))
+		return srv.(UserV1Server).Delete(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

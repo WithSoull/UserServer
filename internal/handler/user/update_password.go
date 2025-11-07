@@ -15,5 +15,5 @@ func (h *handler) UpdatePassword(ctx context.Context, req *desc.UpdatePasswordRe
 	}
 
 	ctx = ipctx.InjectIp(ctx)
-	return &emptypb.Empty{}, h.service.UpdatePassword(ctx, req.GetId(), req.GetPassword(), req.GetPasswordConfirm())
+	return &emptypb.Empty{}, h.service.UpdatePassword(ctx, req.GetPassword(), req.GetPasswordConfirm())
 }
