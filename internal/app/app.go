@@ -25,6 +25,8 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -137,6 +139,11 @@ func (a *App) initGRPCServer(ctx context.Context) error {
 		a.grpcServer.GracefulStop()
 		return nil
 	})
+
+	healthServer := health.NewServer()
+	grpc_health_v1.RegisterHealthServer(a.grpcServer, healthServer)
+	healthServer.SetServingStatus("user.v1.UserServer", grpc_health_v1.HealthCheckResponse_SERVING)
+	healthServer.SetServingStatus("", grpc_health_v1.HealthCheckResponse_SERVING)
 
 	reflection.Register(a.grpcServer)
 
