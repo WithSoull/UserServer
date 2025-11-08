@@ -220,7 +220,7 @@ func RegisterUserV1HandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Create", runtime.WithHTTPPathPattern("/user/v1/create"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Create", runtime.WithHTTPPathPattern("/api/v1/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -245,7 +245,7 @@ func RegisterUserV1HandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Get", runtime.WithHTTPPathPattern("/user/v1/get/{id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Get", runtime.WithHTTPPathPattern("/api/v1/user/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -270,7 +270,7 @@ func RegisterUserV1HandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Update", runtime.WithHTTPPathPattern("/user/v1/udpate"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Update", runtime.WithHTTPPathPattern("/api/v1/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -295,7 +295,7 @@ func RegisterUserV1HandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/UpdatePassword", runtime.WithHTTPPathPattern("/user/v1/update_password"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/UpdatePassword", runtime.WithHTTPPathPattern("/api/v1/user/update_password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -320,7 +320,7 @@ func RegisterUserV1HandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Delete", runtime.WithHTTPPathPattern("/user/v1/delete"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/Delete", runtime.WithHTTPPathPattern("/api/v1/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -345,7 +345,7 @@ func RegisterUserV1HandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/ValidateCredentials", runtime.WithHTTPPathPattern("/user/v1/validate"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/user_v1.UserV1/ValidateCredentials", runtime.WithHTTPPathPattern("/user/v1/user/validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -409,7 +409,7 @@ func RegisterUserV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Create", runtime.WithHTTPPathPattern("/user/v1/create"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Create", runtime.WithHTTPPathPattern("/api/v1/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -431,7 +431,7 @@ func RegisterUserV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Get", runtime.WithHTTPPathPattern("/user/v1/get/{id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Get", runtime.WithHTTPPathPattern("/api/v1/user/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -453,7 +453,7 @@ func RegisterUserV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Update", runtime.WithHTTPPathPattern("/user/v1/udpate"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Update", runtime.WithHTTPPathPattern("/api/v1/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -475,7 +475,7 @@ func RegisterUserV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/UpdatePassword", runtime.WithHTTPPathPattern("/user/v1/update_password"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/UpdatePassword", runtime.WithHTTPPathPattern("/api/v1/user/update_password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -497,7 +497,7 @@ func RegisterUserV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Delete", runtime.WithHTTPPathPattern("/user/v1/delete"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/Delete", runtime.WithHTTPPathPattern("/api/v1/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -519,7 +519,7 @@ func RegisterUserV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/ValidateCredentials", runtime.WithHTTPPathPattern("/user/v1/validate"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/user_v1.UserV1/ValidateCredentials", runtime.WithHTTPPathPattern("/user/v1/user/validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -539,17 +539,17 @@ func RegisterUserV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 }
 
 var (
-	pattern_UserV1_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"user", "v1", "create"}, ""))
+	pattern_UserV1_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "user"}, ""))
 
-	pattern_UserV1_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"user", "v1", "get", "id"}, ""))
+	pattern_UserV1_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "user", "id"}, ""))
 
-	pattern_UserV1_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"user", "v1", "udpate"}, ""))
+	pattern_UserV1_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "user"}, ""))
 
-	pattern_UserV1_UpdatePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"user", "v1", "update_password"}, ""))
+	pattern_UserV1_UpdatePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "user", "update_password"}, ""))
 
-	pattern_UserV1_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"user", "v1", "delete"}, ""))
+	pattern_UserV1_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "user"}, ""))
 
-	pattern_UserV1_ValidateCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"user", "v1", "validate"}, ""))
+	pattern_UserV1_ValidateCredentials_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 0, 2, 2}, []string{"user", "v1", "validate"}, ""))
 )
 
 var (

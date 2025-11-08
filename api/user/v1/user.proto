@@ -13,35 +13,35 @@ option go_package = "github.com/WithSoull/UserServer/pkg/user/v1;user_v1";
 service UserV1 {
   rpc Create(CreateRequest) returns (CreateResponse){
     option (google.api.http) = {
-      post: "/user/v1/create"
+      post: "/api/v1/user"
       body: "*"
     };
   };
   rpc Get(GetRequest) returns (GetResponse){
     option (google.api.http) = {
-      get: "/user/v1/get/{id}"
+      get: "/api/v1/user/{id}"
     };
   };
   rpc Update(UpdateRequest) returns (google.protobuf.Empty){
     option (google.api.http) = {
-      patch: "/user/v1/update"
+      patch: "/api/v1/user"
       body: "*"
     };
   };
   rpc UpdatePassword(UpdatePasswordRequest) returns (google.protobuf.Empty){
     option (google.api.http) = {
-      post: "/user/v1/update_password"
+      post: "/api/v1/user/update_password"
       body: "*"
     };
   };
   rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty){
     option (google.api.http) = {
-      delete: "/user/v1/delete"
+      delete: "/api/v1/user"
     };
   };
   rpc ValidateCredentials(ValidateCredentialsRequest) returns (ValidateCredentialsResponse){
     option (google.api.http) = {
-      post: "/user/v1/validate"
+      post: "/user/v1/user/validate"
       body: "*"
     };
   };
